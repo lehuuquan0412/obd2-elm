@@ -1,0 +1,1769 @@
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 6
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"stm32f4xx_it.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.global	program_s
+  20              		.section	.bss.program_s,"aw",%nobits
+  23              	program_s:
+  24 0000 00       		.space	1
+  25              		.global	count
+  26              		.section	.bss.count,"aw",%nobits
+  27              		.align	3
+  30              	count:
+  31 0000 00000000 		.space	8
+  31      00000000 
+  32              		.global	difs_count
+  33              		.section	.bss.difs_count,"aw",%nobits
+  34              		.align	3
+  37              	difs_count:
+  38 0000 00000000 		.space	8
+  38      00000000 
+  39              		.global	difs_count1
+  40              		.section	.bss.difs_count1,"aw",%nobits
+  41              		.align	3
+  44              	difs_count1:
+  45 0000 00000000 		.space	8
+  45      00000000 
+  46              		.global	difs_count_obd
+  47              		.section	.bss.difs_count_obd,"aw",%nobits
+  48              		.align	3
+  51              	difs_count_obd:
+  52 0000 00000000 		.space	8
+  52      00000000 
+  53              		.global	difs_count_obd2
+  54              		.section	.bss.difs_count_obd2,"aw",%nobits
+  55              		.align	3
+  58              	difs_count_obd2:
+  59 0000 00000000 		.space	8
+  59      00000000 
+  60              		.global	difs_count_HTGP
+  61              		.section	.bss.difs_count_HTGP,"aw",%nobits
+  62              		.align	3
+  65              	difs_count_HTGP:
+  66 0000 00000000 		.space	8
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 2
+
+
+  66      00000000 
+  67              		.section	.text.NMI_Handler,"ax",%progbits
+  68              		.align	1
+  69              		.global	NMI_Handler
+  70              		.syntax unified
+  71              		.thumb
+  72              		.thumb_func
+  74              	NMI_Handler:
+  75              	.LFB133:
+  76              		.file 1 "Src/stm32f4xx_it.c"
+   1:Src/stm32f4xx_it.c **** /**
+   2:Src/stm32f4xx_it.c ****   ******************************************************************************
+   3:Src/stm32f4xx_it.c ****   * @file    Project/STM32F4xx_StdPeriph_Templates/stm32f4xx_it.c 
+   4:Src/stm32f4xx_it.c ****   * @author  MCD Application Team
+   5:Src/stm32f4xx_it.c ****   * @version V1.8.0
+   6:Src/stm32f4xx_it.c ****   * @date    04-November-2016
+   7:Src/stm32f4xx_it.c ****   * @brief   Main Interrupt Service Routines.
+   8:Src/stm32f4xx_it.c ****   *          This file provides template for all exceptions handler and 
+   9:Src/stm32f4xx_it.c ****   *          peripherals interrupt service routine.
+  10:Src/stm32f4xx_it.c ****   ******************************************************************************
+  11:Src/stm32f4xx_it.c ****   * @attention
+  12:Src/stm32f4xx_it.c ****   *
+  13:Src/stm32f4xx_it.c ****   * <h2><center>&copy; COPYRIGHT 2016 STMicroelectronics</center></h2>
+  14:Src/stm32f4xx_it.c ****   *
+  15:Src/stm32f4xx_it.c ****   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+  16:Src/stm32f4xx_it.c ****   * You may not use this file except in compliance with the License.
+  17:Src/stm32f4xx_it.c ****   * You may obtain a copy of the License at:
+  18:Src/stm32f4xx_it.c ****   *
+  19:Src/stm32f4xx_it.c ****   *        http://www.st.com/software_license_agreement_liberty_v2
+  20:Src/stm32f4xx_it.c ****   *
+  21:Src/stm32f4xx_it.c ****   * Unless required by applicable law or agreed to in writing, software 
+  22:Src/stm32f4xx_it.c ****   * distributed under the License is distributed on an "AS IS" BASIS, 
+  23:Src/stm32f4xx_it.c ****   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  24:Src/stm32f4xx_it.c ****   * See the License for the specific language governing permissions and
+  25:Src/stm32f4xx_it.c ****   * limitations under the License.
+  26:Src/stm32f4xx_it.c ****   *
+  27:Src/stm32f4xx_it.c ****   ******************************************************************************
+  28:Src/stm32f4xx_it.c ****   */
+  29:Src/stm32f4xx_it.c **** 
+  30:Src/stm32f4xx_it.c **** /* Includes ------------------------------------------------------------------*/
+  31:Src/stm32f4xx_it.c **** #include "stm32f4xx_it.h"
+  32:Src/stm32f4xx_it.c **** //#include "main.h"
+  33:Src/stm32f4xx_it.c **** 
+  34:Src/stm32f4xx_it.c **** /* Begin User Include*/
+  35:Src/stm32f4xx_it.c **** 
+  36:Src/stm32f4xx_it.c **** #include "config.h"
+  37:Src/stm32f4xx_it.c **** #include "stm32f4xx_flash.h"
+  38:Src/stm32f4xx_it.c **** #include "stm32f4xx_tim.h"
+  39:Src/stm32f4xx_it.c **** #include "OBDII.h"
+  40:Src/stm32f4xx_it.c **** #include "Blu.h"
+  41:Src/stm32f4xx_it.c **** 
+  42:Src/stm32f4xx_it.c **** char program_s=0;
+  43:Src/stm32f4xx_it.c **** uint64_t count=0;
+  44:Src/stm32f4xx_it.c **** uint64_t difs_count=0;
+  45:Src/stm32f4xx_it.c **** uint64_t difs_count1=0;
+  46:Src/stm32f4xx_it.c **** uint64_t difs_count_obd=0;
+  47:Src/stm32f4xx_it.c **** uint64_t difs_count_obd2=0;
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 3
+
+
+  48:Src/stm32f4xx_it.c **** uint64_t difs_count_HTGP=0;
+  49:Src/stm32f4xx_it.c **** extern uint8_t c_dt[8];
+  50:Src/stm32f4xx_it.c **** extern uint8_t c_rcv_flag;
+  51:Src/stm32f4xx_it.c **** 
+  52:Src/stm32f4xx_it.c **** 
+  53:Src/stm32f4xx_it.c **** /* End User Include*/
+  54:Src/stm32f4xx_it.c **** 
+  55:Src/stm32f4xx_it.c **** /** @addtogroup Template_Project
+  56:Src/stm32f4xx_it.c ****   * @{
+  57:Src/stm32f4xx_it.c ****   */
+  58:Src/stm32f4xx_it.c **** 
+  59:Src/stm32f4xx_it.c **** /* Private typedef -----------------------------------------------------------*/
+  60:Src/stm32f4xx_it.c **** /* Private define ------------------------------------------------------------*/
+  61:Src/stm32f4xx_it.c **** /* Private macro -------------------------------------------------------------*/
+  62:Src/stm32f4xx_it.c **** /* Private variables ---------------------------------------------------------*/
+  63:Src/stm32f4xx_it.c **** /* Private function prototypes -----------------------------------------------*/
+  64:Src/stm32f4xx_it.c **** /* Private functions ---------------------------------------------------------*/
+  65:Src/stm32f4xx_it.c **** 
+  66:Src/stm32f4xx_it.c **** /******************************************************************************/
+  67:Src/stm32f4xx_it.c **** /*            Cortex-M4 Processor Exceptions Handlers                         */
+  68:Src/stm32f4xx_it.c **** /******************************************************************************/
+  69:Src/stm32f4xx_it.c **** 
+  70:Src/stm32f4xx_it.c **** /**
+  71:Src/stm32f4xx_it.c ****   * @brief  This function handles NMI exception.
+  72:Src/stm32f4xx_it.c ****   * @param  None
+  73:Src/stm32f4xx_it.c ****   * @retval None
+  74:Src/stm32f4xx_it.c ****   */
+  75:Src/stm32f4xx_it.c **** void NMI_Handler(void)
+  76:Src/stm32f4xx_it.c **** {
+  77              		.loc 1 76 1
+  78              		.cfi_startproc
+  79              		@ args = 0, pretend = 0, frame = 0
+  80              		@ frame_needed = 1, uses_anonymous_args = 0
+  81              		@ link register save eliminated.
+  82 0000 80B4     		push	{r7}
+  83              	.LCFI0:
+  84              		.cfi_def_cfa_offset 4
+  85              		.cfi_offset 7, -4
+  86 0002 00AF     		add	r7, sp, #0
+  87              	.LCFI1:
+  88              		.cfi_def_cfa_register 7
+  77:Src/stm32f4xx_it.c **** }
+  89              		.loc 1 77 1
+  90 0004 00BF     		nop
+  91 0006 BD46     		mov	sp, r7
+  92              	.LCFI2:
+  93              		.cfi_def_cfa_register 13
+  94              		@ sp needed
+  95 0008 5DF8047B 		ldr	r7, [sp], #4
+  96              	.LCFI3:
+  97              		.cfi_restore 7
+  98              		.cfi_def_cfa_offset 0
+  99 000c 7047     		bx	lr
+ 100              		.cfi_endproc
+ 101              	.LFE133:
+ 103              		.section	.text.HardFault_Handler,"ax",%progbits
+ 104              		.align	1
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 4
+
+
+ 105              		.global	HardFault_Handler
+ 106              		.syntax unified
+ 107              		.thumb
+ 108              		.thumb_func
+ 110              	HardFault_Handler:
+ 111              	.LFB134:
+  78:Src/stm32f4xx_it.c **** 
+  79:Src/stm32f4xx_it.c **** /**
+  80:Src/stm32f4xx_it.c ****   * @brief  This function handles Hard Fault exception.
+  81:Src/stm32f4xx_it.c ****   * @param  None
+  82:Src/stm32f4xx_it.c ****   * @retval None
+  83:Src/stm32f4xx_it.c ****   */
+  84:Src/stm32f4xx_it.c **** void HardFault_Handler(void)
+  85:Src/stm32f4xx_it.c **** {
+ 112              		.loc 1 85 1
+ 113              		.cfi_startproc
+ 114              		@ args = 0, pretend = 0, frame = 0
+ 115              		@ frame_needed = 1, uses_anonymous_args = 0
+ 116              		@ link register save eliminated.
+ 117 0000 80B4     		push	{r7}
+ 118              	.LCFI4:
+ 119              		.cfi_def_cfa_offset 4
+ 120              		.cfi_offset 7, -4
+ 121 0002 00AF     		add	r7, sp, #0
+ 122              	.LCFI5:
+ 123              		.cfi_def_cfa_register 7
+ 124              	.L3:
+  86:Src/stm32f4xx_it.c ****   /* Go to infinite loop when Hard Fault exception occurs */
+  87:Src/stm32f4xx_it.c ****   while (1)
+ 125              		.loc 1 87 9 discriminator 1
+ 126 0004 FEE7     		b	.L3
+ 127              		.cfi_endproc
+ 128              	.LFE134:
+ 130              		.section	.text.MemManage_Handler,"ax",%progbits
+ 131              		.align	1
+ 132              		.global	MemManage_Handler
+ 133              		.syntax unified
+ 134              		.thumb
+ 135              		.thumb_func
+ 137              	MemManage_Handler:
+ 138              	.LFB135:
+  88:Src/stm32f4xx_it.c ****   {
+  89:Src/stm32f4xx_it.c ****   }
+  90:Src/stm32f4xx_it.c **** }
+  91:Src/stm32f4xx_it.c **** 
+  92:Src/stm32f4xx_it.c **** /**
+  93:Src/stm32f4xx_it.c ****   * @brief  This function handles Memory Manage exception.
+  94:Src/stm32f4xx_it.c ****   * @param  None
+  95:Src/stm32f4xx_it.c ****   * @retval None
+  96:Src/stm32f4xx_it.c ****   */
+  97:Src/stm32f4xx_it.c **** void MemManage_Handler(void)
+  98:Src/stm32f4xx_it.c **** {
+ 139              		.loc 1 98 1
+ 140              		.cfi_startproc
+ 141              		@ args = 0, pretend = 0, frame = 0
+ 142              		@ frame_needed = 1, uses_anonymous_args = 0
+ 143              		@ link register save eliminated.
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 5
+
+
+ 144 0000 80B4     		push	{r7}
+ 145              	.LCFI6:
+ 146              		.cfi_def_cfa_offset 4
+ 147              		.cfi_offset 7, -4
+ 148 0002 00AF     		add	r7, sp, #0
+ 149              	.LCFI7:
+ 150              		.cfi_def_cfa_register 7
+ 151              	.L5:
+  99:Src/stm32f4xx_it.c ****   /* Go to infinite loop when Memory Manage exception occurs */
+ 100:Src/stm32f4xx_it.c ****   while (1)
+ 152              		.loc 1 100 9 discriminator 1
+ 153 0004 FEE7     		b	.L5
+ 154              		.cfi_endproc
+ 155              	.LFE135:
+ 157              		.section	.text.BusFault_Handler,"ax",%progbits
+ 158              		.align	1
+ 159              		.global	BusFault_Handler
+ 160              		.syntax unified
+ 161              		.thumb
+ 162              		.thumb_func
+ 164              	BusFault_Handler:
+ 165              	.LFB136:
+ 101:Src/stm32f4xx_it.c ****   {
+ 102:Src/stm32f4xx_it.c ****   }
+ 103:Src/stm32f4xx_it.c **** }
+ 104:Src/stm32f4xx_it.c **** 
+ 105:Src/stm32f4xx_it.c **** /**
+ 106:Src/stm32f4xx_it.c ****   * @brief  This function handles Bus Fault exception.
+ 107:Src/stm32f4xx_it.c ****   * @param  None
+ 108:Src/stm32f4xx_it.c ****   * @retval None
+ 109:Src/stm32f4xx_it.c ****   */
+ 110:Src/stm32f4xx_it.c **** void BusFault_Handler(void)
+ 111:Src/stm32f4xx_it.c **** {
+ 166              		.loc 1 111 1
+ 167              		.cfi_startproc
+ 168              		@ args = 0, pretend = 0, frame = 0
+ 169              		@ frame_needed = 1, uses_anonymous_args = 0
+ 170              		@ link register save eliminated.
+ 171 0000 80B4     		push	{r7}
+ 172              	.LCFI8:
+ 173              		.cfi_def_cfa_offset 4
+ 174              		.cfi_offset 7, -4
+ 175 0002 00AF     		add	r7, sp, #0
+ 176              	.LCFI9:
+ 177              		.cfi_def_cfa_register 7
+ 178              	.L7:
+ 112:Src/stm32f4xx_it.c ****   /* Go to infinite loop when Bus Fault exception occurs */
+ 113:Src/stm32f4xx_it.c ****   while (1)
+ 179              		.loc 1 113 9 discriminator 1
+ 180 0004 FEE7     		b	.L7
+ 181              		.cfi_endproc
+ 182              	.LFE136:
+ 184              		.section	.text.UsageFault_Handler,"ax",%progbits
+ 185              		.align	1
+ 186              		.global	UsageFault_Handler
+ 187              		.syntax unified
+ 188              		.thumb
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 6
+
+
+ 189              		.thumb_func
+ 191              	UsageFault_Handler:
+ 192              	.LFB137:
+ 114:Src/stm32f4xx_it.c ****   {
+ 115:Src/stm32f4xx_it.c ****   }
+ 116:Src/stm32f4xx_it.c **** }
+ 117:Src/stm32f4xx_it.c **** 
+ 118:Src/stm32f4xx_it.c **** /**
+ 119:Src/stm32f4xx_it.c ****   * @brief  This function handles Usage Fault exception.
+ 120:Src/stm32f4xx_it.c ****   * @param  None
+ 121:Src/stm32f4xx_it.c ****   * @retval None
+ 122:Src/stm32f4xx_it.c ****   */
+ 123:Src/stm32f4xx_it.c **** void UsageFault_Handler(void)
+ 124:Src/stm32f4xx_it.c **** {
+ 193              		.loc 1 124 1
+ 194              		.cfi_startproc
+ 195              		@ args = 0, pretend = 0, frame = 0
+ 196              		@ frame_needed = 1, uses_anonymous_args = 0
+ 197              		@ link register save eliminated.
+ 198 0000 80B4     		push	{r7}
+ 199              	.LCFI10:
+ 200              		.cfi_def_cfa_offset 4
+ 201              		.cfi_offset 7, -4
+ 202 0002 00AF     		add	r7, sp, #0
+ 203              	.LCFI11:
+ 204              		.cfi_def_cfa_register 7
+ 205              	.L9:
+ 125:Src/stm32f4xx_it.c ****   /* Go to infinite loop when Usage Fault exception occurs */
+ 126:Src/stm32f4xx_it.c ****   while (1)
+ 206              		.loc 1 126 9 discriminator 1
+ 207 0004 FEE7     		b	.L9
+ 208              		.cfi_endproc
+ 209              	.LFE137:
+ 211              		.section	.text.DebugMon_Handler,"ax",%progbits
+ 212              		.align	1
+ 213              		.global	DebugMon_Handler
+ 214              		.syntax unified
+ 215              		.thumb
+ 216              		.thumb_func
+ 218              	DebugMon_Handler:
+ 219              	.LFB138:
+ 127:Src/stm32f4xx_it.c ****   {
+ 128:Src/stm32f4xx_it.c ****   }
+ 129:Src/stm32f4xx_it.c **** }
+ 130:Src/stm32f4xx_it.c **** 
+ 131:Src/stm32f4xx_it.c **** /**
+ 132:Src/stm32f4xx_it.c ****   * @brief  This function handles SVCall exception.
+ 133:Src/stm32f4xx_it.c ****   * @param  None
+ 134:Src/stm32f4xx_it.c ****   * @retval None
+ 135:Src/stm32f4xx_it.c ****   */
+ 136:Src/stm32f4xx_it.c **** // void SVC_Handler(void)
+ 137:Src/stm32f4xx_it.c **** // {
+ 138:Src/stm32f4xx_it.c **** // }
+ 139:Src/stm32f4xx_it.c **** 
+ 140:Src/stm32f4xx_it.c **** /**
+ 141:Src/stm32f4xx_it.c ****   * @brief  This function handles Debug Monitor exception.
+ 142:Src/stm32f4xx_it.c ****   * @param  None
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 7
+
+
+ 143:Src/stm32f4xx_it.c ****   * @retval None
+ 144:Src/stm32f4xx_it.c ****   */
+ 145:Src/stm32f4xx_it.c **** void DebugMon_Handler(void)
+ 146:Src/stm32f4xx_it.c **** {
+ 220              		.loc 1 146 1
+ 221              		.cfi_startproc
+ 222              		@ args = 0, pretend = 0, frame = 0
+ 223              		@ frame_needed = 1, uses_anonymous_args = 0
+ 224              		@ link register save eliminated.
+ 225 0000 80B4     		push	{r7}
+ 226              	.LCFI12:
+ 227              		.cfi_def_cfa_offset 4
+ 228              		.cfi_offset 7, -4
+ 229 0002 00AF     		add	r7, sp, #0
+ 230              	.LCFI13:
+ 231              		.cfi_def_cfa_register 7
+ 147:Src/stm32f4xx_it.c **** }
+ 232              		.loc 1 147 1
+ 233 0004 00BF     		nop
+ 234 0006 BD46     		mov	sp, r7
+ 235              	.LCFI14:
+ 236              		.cfi_def_cfa_register 13
+ 237              		@ sp needed
+ 238 0008 5DF8047B 		ldr	r7, [sp], #4
+ 239              	.LCFI15:
+ 240              		.cfi_restore 7
+ 241              		.cfi_def_cfa_offset 0
+ 242 000c 7047     		bx	lr
+ 243              		.cfi_endproc
+ 244              	.LFE138:
+ 246              		.section	.text.GeterSystick,"ax",%progbits
+ 247              		.align	1
+ 248              		.global	GeterSystick
+ 249              		.syntax unified
+ 250              		.thumb
+ 251              		.thumb_func
+ 253              	GeterSystick:
+ 254              	.LFB139:
+ 148:Src/stm32f4xx_it.c **** 
+ 149:Src/stm32f4xx_it.c **** /**
+ 150:Src/stm32f4xx_it.c ****   * @brief  This function handles PendSVC exception.
+ 151:Src/stm32f4xx_it.c ****   * @param  None
+ 152:Src/stm32f4xx_it.c ****   * @retval None
+ 153:Src/stm32f4xx_it.c ****   */
+ 154:Src/stm32f4xx_it.c **** // void PendSV_Handler(void)
+ 155:Src/stm32f4xx_it.c **** // {
+ 156:Src/stm32f4xx_it.c **** // }
+ 157:Src/stm32f4xx_it.c **** 
+ 158:Src/stm32f4xx_it.c **** /**
+ 159:Src/stm32f4xx_it.c ****   * @brief  This function handles SysTick Handler.
+ 160:Src/stm32f4xx_it.c ****   * @param  None
+ 161:Src/stm32f4xx_it.c ****   * @retval None
+ 162:Src/stm32f4xx_it.c ****   */
+ 163:Src/stm32f4xx_it.c **** // void SysTick_Handler(void)
+ 164:Src/stm32f4xx_it.c **** // {
+ 165:Src/stm32f4xx_it.c **** //   //TimingDelay_Decrement();
+ 166:Src/stm32f4xx_it.c **** // }
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 8
+
+
+ 167:Src/stm32f4xx_it.c **** 
+ 168:Src/stm32f4xx_it.c **** /******************************************************************************/
+ 169:Src/stm32f4xx_it.c **** /*                 STM32F4xx Peripherals Interrupt Handlers                   */
+ 170:Src/stm32f4xx_it.c **** /*  Add here the Interrupt Handler for the used peripheral(s) (PPP), for the  */
+ 171:Src/stm32f4xx_it.c **** /*  available peripheral interrupt handler's name please refer to the startup */
+ 172:Src/stm32f4xx_it.c **** /*  file (startup_stm32f4xx.s).                                               */
+ 173:Src/stm32f4xx_it.c **** /******************************************************************************/
+ 174:Src/stm32f4xx_it.c **** 
+ 175:Src/stm32f4xx_it.c **** /**
+ 176:Src/stm32f4xx_it.c ****   * @brief  This function handles PPP interrupt request.
+ 177:Src/stm32f4xx_it.c ****   * @param  None
+ 178:Src/stm32f4xx_it.c ****   * @retval None
+ 179:Src/stm32f4xx_it.c ****   */
+ 180:Src/stm32f4xx_it.c **** /*void PPP_IRQHandler(void)
+ 181:Src/stm32f4xx_it.c **** {
+ 182:Src/stm32f4xx_it.c **** }*/
+ 183:Src/stm32f4xx_it.c **** 
+ 184:Src/stm32f4xx_it.c **** /* Begin User configure */
+ 185:Src/stm32f4xx_it.c **** 
+ 186:Src/stm32f4xx_it.c **** //---------------------get csystick count param------------------------//
+ 187:Src/stm32f4xx_it.c **** uint64_t GeterSystick()
+ 188:Src/stm32f4xx_it.c **** {
+ 255              		.loc 1 188 1
+ 256              		.cfi_startproc
+ 257              		@ args = 0, pretend = 0, frame = 0
+ 258              		@ frame_needed = 1, uses_anonymous_args = 0
+ 259              		@ link register save eliminated.
+ 260 0000 80B4     		push	{r7}
+ 261              	.LCFI16:
+ 262              		.cfi_def_cfa_offset 4
+ 263              		.cfi_offset 7, -4
+ 264 0002 00AF     		add	r7, sp, #0
+ 265              	.LCFI17:
+ 266              		.cfi_def_cfa_register 7
+ 189:Src/stm32f4xx_it.c **** 	return count;
+ 267              		.loc 1 189 9
+ 268 0004 044B     		ldr	r3, .L13
+ 269 0006 D3E90023 		ldrd	r2, [r3]
+ 190:Src/stm32f4xx_it.c **** }
+ 270              		.loc 1 190 1
+ 271 000a 1046     		mov	r0, r2
+ 272 000c 1946     		mov	r1, r3
+ 273 000e BD46     		mov	sp, r7
+ 274              	.LCFI18:
+ 275              		.cfi_def_cfa_register 13
+ 276              		@ sp needed
+ 277 0010 5DF8047B 		ldr	r7, [sp], #4
+ 278              	.LCFI19:
+ 279              		.cfi_restore 7
+ 280              		.cfi_def_cfa_offset 0
+ 281 0014 7047     		bx	lr
+ 282              	.L14:
+ 283 0016 00BF     		.align	2
+ 284              	.L13:
+ 285 0018 00000000 		.word	count
+ 286              		.cfi_endproc
+ 287              	.LFE139:
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 9
+
+
+ 289              		.section	.text.seterSystick,"ax",%progbits
+ 290              		.align	1
+ 291              		.global	seterSystick
+ 292              		.syntax unified
+ 293              		.thumb
+ 294              		.thumb_func
+ 296              	seterSystick:
+ 297              	.LFB140:
+ 191:Src/stm32f4xx_it.c **** 
+ 192:Src/stm32f4xx_it.c **** 
+ 193:Src/stm32f4xx_it.c **** //---------------------set csystick count param------------------------//
+ 194:Src/stm32f4xx_it.c **** void seterSystick(uint64_t set_count)
+ 195:Src/stm32f4xx_it.c **** {
+ 298              		.loc 1 195 1
+ 299              		.cfi_startproc
+ 300              		@ args = 0, pretend = 0, frame = 8
+ 301              		@ frame_needed = 1, uses_anonymous_args = 0
+ 302              		@ link register save eliminated.
+ 303 0000 80B4     		push	{r7}
+ 304              	.LCFI20:
+ 305              		.cfi_def_cfa_offset 4
+ 306              		.cfi_offset 7, -4
+ 307 0002 83B0     		sub	sp, sp, #12
+ 308              	.LCFI21:
+ 309              		.cfi_def_cfa_offset 16
+ 310 0004 00AF     		add	r7, sp, #0
+ 311              	.LCFI22:
+ 312              		.cfi_def_cfa_register 7
+ 313 0006 C7E90001 		strd	r0, [r7]
+ 196:Src/stm32f4xx_it.c **** 	count=set_count;
+ 314              		.loc 1 196 7
+ 315 000a 0549     		ldr	r1, .L16
+ 316 000c D7E90023 		ldrd	r2, [r7]
+ 317 0010 C1E90023 		strd	r2, [r1]
+ 197:Src/stm32f4xx_it.c **** }
+ 318              		.loc 1 197 1
+ 319 0014 00BF     		nop
+ 320 0016 0C37     		adds	r7, r7, #12
+ 321              	.LCFI23:
+ 322              		.cfi_def_cfa_offset 4
+ 323 0018 BD46     		mov	sp, r7
+ 324              	.LCFI24:
+ 325              		.cfi_def_cfa_register 13
+ 326              		@ sp needed
+ 327 001a 5DF8047B 		ldr	r7, [sp], #4
+ 328              	.LCFI25:
+ 329              		.cfi_restore 7
+ 330              		.cfi_def_cfa_offset 0
+ 331 001e 7047     		bx	lr
+ 332              	.L17:
+ 333              		.align	2
+ 334              	.L16:
+ 335 0020 00000000 		.word	count
+ 336              		.cfi_endproc
+ 337              	.LFE140:
+ 339              		.section	.text.Geterms,"ax",%progbits
+ 340              		.align	1
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 10
+
+
+ 341              		.global	Geterms
+ 342              		.syntax unified
+ 343              		.thumb
+ 344              		.thumb_func
+ 346              	Geterms:
+ 347              	.LFB141:
+ 198:Src/stm32f4xx_it.c **** 
+ 199:Src/stm32f4xx_it.c **** 
+ 200:Src/stm32f4xx_it.c **** //---------------------get ms of start------------------------//100�S
+ 201:Src/stm32f4xx_it.c **** uint64_t Geterms()
+ 202:Src/stm32f4xx_it.c **** {	
+ 348              		.loc 1 202 1
+ 349              		.cfi_startproc
+ 350              		@ args = 0, pretend = 0, frame = 0
+ 351              		@ frame_needed = 1, uses_anonymous_args = 0
+ 352              		@ link register save eliminated.
+ 353 0000 80B4     		push	{r7}
+ 354              	.LCFI26:
+ 355              		.cfi_def_cfa_offset 4
+ 356              		.cfi_offset 7, -4
+ 357 0002 00AF     		add	r7, sp, #0
+ 358              	.LCFI27:
+ 359              		.cfi_def_cfa_register 7
+ 203:Src/stm32f4xx_it.c **** 	return ((count*ms_multiple)/ms_devider);
+ 360              		.loc 1 203 29
+ 361 0004 044B     		ldr	r3, .L20
+ 362 0006 D3E90023 		ldrd	r2, [r3]
+ 204:Src/stm32f4xx_it.c **** }
+ 363              		.loc 1 204 1
+ 364 000a 1046     		mov	r0, r2
+ 365 000c 1946     		mov	r1, r3
+ 366 000e BD46     		mov	sp, r7
+ 367              	.LCFI28:
+ 368              		.cfi_def_cfa_register 13
+ 369              		@ sp needed
+ 370 0010 5DF8047B 		ldr	r7, [sp], #4
+ 371              	.LCFI29:
+ 372              		.cfi_restore 7
+ 373              		.cfi_def_cfa_offset 0
+ 374 0014 7047     		bx	lr
+ 375              	.L21:
+ 376 0016 00BF     		.align	2
+ 377              	.L20:
+ 378 0018 00000000 		.word	count
+ 379              		.cfi_endproc
+ 380              	.LFE141:
+ 382              		.section	.text.Geterus,"ax",%progbits
+ 383              		.align	1
+ 384              		.global	Geterus
+ 385              		.syntax unified
+ 386              		.thumb
+ 387              		.thumb_func
+ 389              	Geterus:
+ 390              	.LFB142:
+ 205:Src/stm32f4xx_it.c **** 
+ 206:Src/stm32f4xx_it.c **** 
+ 207:Src/stm32f4xx_it.c **** 
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 11
+
+
+ 208:Src/stm32f4xx_it.c **** //---------------------get us of start------------------------//100�S
+ 209:Src/stm32f4xx_it.c **** uint64_t Geterus()
+ 210:Src/stm32f4xx_it.c **** {
+ 391              		.loc 1 210 1
+ 392              		.cfi_startproc
+ 393              		@ args = 0, pretend = 0, frame = 0
+ 394              		@ frame_needed = 1, uses_anonymous_args = 0
+ 395              		@ link register save eliminated.
+ 396 0000 2DE9B00F 		push	{r4, r5, r7, r8, r9, r10, fp}
+ 397              	.LCFI30:
+ 398              		.cfi_def_cfa_offset 28
+ 399              		.cfi_offset 4, -28
+ 400              		.cfi_offset 5, -24
+ 401              		.cfi_offset 7, -20
+ 402              		.cfi_offset 8, -16
+ 403              		.cfi_offset 9, -12
+ 404              		.cfi_offset 10, -8
+ 405              		.cfi_offset 11, -4
+ 406 0004 00AF     		add	r7, sp, #0
+ 407              	.LCFI31:
+ 408              		.cfi_def_cfa_register 7
+ 211:Src/stm32f4xx_it.c **** 	return ((count*us_multiple)/us_devider);
+ 409              		.loc 1 211 29
+ 410 0006 1B49     		ldr	r1, .L24
+ 411 0008 D1E90045 		ldrd	r4, [r1]
+ 412 000c 2046     		mov	r0, r4
+ 413 000e 2946     		mov	r1, r5
+ 414 0010 4FF0000A 		mov	r10, #0
+ 415 0014 4FF0000B 		mov	fp, #0
+ 416 0018 4FEA411B 		lsl	fp, r1, #5
+ 417 001c 4BEAD06B 		orr	fp, fp, r0, lsr #27
+ 418 0020 4FEA401A 		lsl	r10, r0, #5
+ 419 0024 5046     		mov	r0, r10
+ 420 0026 5946     		mov	r1, fp
+ 421 0028 021B     		subs	r2, r0, r4
+ 422 002a 61EB0503 		sbc	r3, r1, r5
+ 423 002e 4FF00000 		mov	r0, #0
+ 424 0032 4FF00001 		mov	r1, #0
+ 425 0036 9900     		lsls	r1, r3, #2
+ 426 0038 41EA9271 		orr	r1, r1, r2, lsr #30
+ 427 003c 9000     		lsls	r0, r2, #2
+ 428 003e 0246     		mov	r2, r0
+ 429 0040 0B46     		mov	r3, r1
+ 430 0042 12EB0408 		adds	r8, r2, r4
+ 431 0046 43EB0509 		adc	r9, r3, r5
+ 432 004a 4FF00002 		mov	r2, #0
+ 433 004e 4FF00003 		mov	r3, #0
+ 434 0052 4FEAC903 		lsl	r3, r9, #3
+ 435 0056 43EA5873 		orr	r3, r3, r8, lsr #29
+ 436 005a 4FEAC802 		lsl	r2, r8, #3
+ 437 005e 9046     		mov	r8, r2
+ 438 0060 9946     		mov	r9, r3
+ 439 0062 4246     		mov	r2, r8
+ 440 0064 4B46     		mov	r3, r9
+ 212:Src/stm32f4xx_it.c **** }
+ 441              		.loc 1 212 1
+ 442 0066 1046     		mov	r0, r2
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 12
+
+
+ 443 0068 1946     		mov	r1, r3
+ 444 006a BD46     		mov	sp, r7
+ 445              	.LCFI32:
+ 446              		.cfi_def_cfa_register 13
+ 447              		@ sp needed
+ 448 006c BDE8B00F 		pop	{r4, r5, r7, r8, r9, r10, fp}
+ 449              	.LCFI33:
+ 450              		.cfi_restore 11
+ 451              		.cfi_restore 10
+ 452              		.cfi_restore 9
+ 453              		.cfi_restore 8
+ 454              		.cfi_restore 7
+ 455              		.cfi_restore 5
+ 456              		.cfi_restore 4
+ 457              		.cfi_def_cfa_offset 0
+ 458 0070 7047     		bx	lr
+ 459              	.L25:
+ 460 0072 00BF     		.align	2
+ 461              	.L24:
+ 462 0074 00000000 		.word	count
+ 463              		.cfi_endproc
+ 464              	.LFE142:
+ 466              		.section	.text.setms_timecount,"ax",%progbits
+ 467              		.align	1
+ 468              		.global	setms_timecount
+ 469              		.syntax unified
+ 470              		.thumb
+ 471              		.thumb_func
+ 473              	setms_timecount:
+ 474              	.LFB143:
+ 213:Src/stm32f4xx_it.c **** 
+ 214:Src/stm32f4xx_it.c **** //---------------------set ms for reach------------------------//10�S
+ 215:Src/stm32f4xx_it.c **** void setms_timecount(uint32_t set_count)
+ 216:Src/stm32f4xx_it.c **** {
+ 475              		.loc 1 216 1
+ 476              		.cfi_startproc
+ 477              		@ args = 0, pretend = 0, frame = 8
+ 478              		@ frame_needed = 1, uses_anonymous_args = 0
+ 479              		@ link register save eliminated.
+ 480 0000 2DE9B003 		push	{r4, r5, r7, r8, r9}
+ 481              	.LCFI34:
+ 482              		.cfi_def_cfa_offset 20
+ 483              		.cfi_offset 4, -20
+ 484              		.cfi_offset 5, -16
+ 485              		.cfi_offset 7, -12
+ 486              		.cfi_offset 8, -8
+ 487              		.cfi_offset 9, -4
+ 488 0004 83B0     		sub	sp, sp, #12
+ 489              	.LCFI35:
+ 490              		.cfi_def_cfa_offset 32
+ 491 0006 00AF     		add	r7, sp, #0
+ 492              	.LCFI36:
+ 493              		.cfi_def_cfa_register 7
+ 494 0008 7860     		str	r0, [r7, #4]
+ 217:Src/stm32f4xx_it.c **** 	difs_count=count +((set_count*ms_devider)/ms_multiple);
+ 495              		.loc 1 217 43
+ 496 000a 7B68     		ldr	r3, [r7, #4]
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 13
+
+
+ 497 000c 0022     		movs	r2, #0
+ 498 000e 1C46     		mov	r4, r3
+ 499 0010 1546     		mov	r5, r2
+ 500              		.loc 1 217 19
+ 501 0012 084B     		ldr	r3, .L27
+ 502 0014 D3E90023 		ldrd	r2, [r3]
+ 503 0018 14EB0208 		adds	r8, r4, r2
+ 504 001c 45EB0309 		adc	r9, r5, r3
+ 505              		.loc 1 217 12
+ 506 0020 054B     		ldr	r3, .L27+4
+ 507 0022 C3E90089 		strd	r8, [r3]
+ 218:Src/stm32f4xx_it.c **** }
+ 508              		.loc 1 218 1
+ 509 0026 00BF     		nop
+ 510 0028 0C37     		adds	r7, r7, #12
+ 511              	.LCFI37:
+ 512              		.cfi_def_cfa_offset 20
+ 513 002a BD46     		mov	sp, r7
+ 514              	.LCFI38:
+ 515              		.cfi_def_cfa_register 13
+ 516              		@ sp needed
+ 517 002c BDE8B003 		pop	{r4, r5, r7, r8, r9}
+ 518              	.LCFI39:
+ 519              		.cfi_restore 9
+ 520              		.cfi_restore 8
+ 521              		.cfi_restore 7
+ 522              		.cfi_restore 5
+ 523              		.cfi_restore 4
+ 524              		.cfi_def_cfa_offset 0
+ 525 0030 7047     		bx	lr
+ 526              	.L28:
+ 527 0032 00BF     		.align	2
+ 528              	.L27:
+ 529 0034 00000000 		.word	count
+ 530 0038 00000000 		.word	difs_count
+ 531              		.cfi_endproc
+ 532              	.LFE143:
+ 534              		.section	.text.setus_timecount,"ax",%progbits
+ 535              		.align	1
+ 536              		.global	setus_timecount
+ 537              		.syntax unified
+ 538              		.thumb
+ 539              		.thumb_func
+ 541              	setus_timecount:
+ 542              	.LFB144:
+ 219:Src/stm32f4xx_it.c **** //---------------------set us for reach------------------------//10�S
+ 220:Src/stm32f4xx_it.c **** void setus_timecount(uint32_t set_count)
+ 221:Src/stm32f4xx_it.c **** {
+ 543              		.loc 1 221 1
+ 544              		.cfi_startproc
+ 545              		@ args = 0, pretend = 0, frame = 8
+ 546              		@ frame_needed = 1, uses_anonymous_args = 0
+ 547              		@ link register save eliminated.
+ 548 0000 2DE9B003 		push	{r4, r5, r7, r8, r9}
+ 549              	.LCFI40:
+ 550              		.cfi_def_cfa_offset 20
+ 551              		.cfi_offset 4, -20
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 14
+
+
+ 552              		.cfi_offset 5, -16
+ 553              		.cfi_offset 7, -12
+ 554              		.cfi_offset 8, -8
+ 555              		.cfi_offset 9, -4
+ 556 0004 83B0     		sub	sp, sp, #12
+ 557              	.LCFI41:
+ 558              		.cfi_def_cfa_offset 32
+ 559 0006 00AF     		add	r7, sp, #0
+ 560              	.LCFI42:
+ 561              		.cfi_def_cfa_register 7
+ 562 0008 7860     		str	r0, [r7, #4]
+ 222:Src/stm32f4xx_it.c **** 	difs_count=count+((set_count*us_devider)/us_multiple);
+ 563              		.loc 1 222 42
+ 564 000a 7B68     		ldr	r3, [r7, #4]
+ 565 000c 0B4A     		ldr	r2, .L30
+ 566 000e A2FB0323 		umull	r2, r3, r2, r3
+ 567 0012 9B09     		lsrs	r3, r3, #6
+ 568 0014 0022     		movs	r2, #0
+ 569 0016 1C46     		mov	r4, r3
+ 570 0018 1546     		mov	r5, r2
+ 571              		.loc 1 222 18
+ 572 001a 094B     		ldr	r3, .L30+4
+ 573 001c D3E90023 		ldrd	r2, [r3]
+ 574 0020 14EB0208 		adds	r8, r4, r2
+ 575 0024 45EB0309 		adc	r9, r5, r3
+ 576              		.loc 1 222 12
+ 577 0028 064B     		ldr	r3, .L30+8
+ 578 002a C3E90089 		strd	r8, [r3]
+ 223:Src/stm32f4xx_it.c **** }
+ 579              		.loc 1 223 1
+ 580 002e 00BF     		nop
+ 581 0030 0C37     		adds	r7, r7, #12
+ 582              	.LCFI43:
+ 583              		.cfi_def_cfa_offset 20
+ 584 0032 BD46     		mov	sp, r7
+ 585              	.LCFI44:
+ 586              		.cfi_def_cfa_register 13
+ 587              		@ sp needed
+ 588 0034 BDE8B003 		pop	{r4, r5, r7, r8, r9}
+ 589              	.LCFI45:
+ 590              		.cfi_restore 9
+ 591              		.cfi_restore 8
+ 592              		.cfi_restore 7
+ 593              		.cfi_restore 5
+ 594              		.cfi_restore 4
+ 595              		.cfi_def_cfa_offset 0
+ 596 0038 7047     		bx	lr
+ 597              	.L31:
+ 598 003a 00BF     		.align	2
+ 599              	.L30:
+ 600 003c D34D6210 		.word	274877907
+ 601 0040 00000000 		.word	count
+ 602 0044 00000000 		.word	difs_count
+ 603              		.cfi_endproc
+ 604              	.LFE144:
+ 606              		.section	.text.setms_timecount_obd,"ax",%progbits
+ 607              		.align	1
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 15
+
+
+ 608              		.global	setms_timecount_obd
+ 609              		.syntax unified
+ 610              		.thumb
+ 611              		.thumb_func
+ 613              	setms_timecount_obd:
+ 614              	.LFB145:
+ 224:Src/stm32f4xx_it.c **** 
+ 225:Src/stm32f4xx_it.c **** void setms_timecount_obd(uint32_t set_count)
+ 226:Src/stm32f4xx_it.c **** {
+ 615              		.loc 1 226 1
+ 616              		.cfi_startproc
+ 617              		@ args = 0, pretend = 0, frame = 8
+ 618              		@ frame_needed = 1, uses_anonymous_args = 0
+ 619              		@ link register save eliminated.
+ 620 0000 2DE9B003 		push	{r4, r5, r7, r8, r9}
+ 621              	.LCFI46:
+ 622              		.cfi_def_cfa_offset 20
+ 623              		.cfi_offset 4, -20
+ 624              		.cfi_offset 5, -16
+ 625              		.cfi_offset 7, -12
+ 626              		.cfi_offset 8, -8
+ 627              		.cfi_offset 9, -4
+ 628 0004 83B0     		sub	sp, sp, #12
+ 629              	.LCFI47:
+ 630              		.cfi_def_cfa_offset 32
+ 631 0006 00AF     		add	r7, sp, #0
+ 632              	.LCFI48:
+ 633              		.cfi_def_cfa_register 7
+ 634 0008 7860     		str	r0, [r7, #4]
+ 227:Src/stm32f4xx_it.c **** 	difs_count_obd=count +((set_count*ms_devider)/ms_multiple);
+ 635              		.loc 1 227 47
+ 636 000a 7B68     		ldr	r3, [r7, #4]
+ 637 000c 0022     		movs	r2, #0
+ 638 000e 1C46     		mov	r4, r3
+ 639 0010 1546     		mov	r5, r2
+ 640              		.loc 1 227 23
+ 641 0012 084B     		ldr	r3, .L33
+ 642 0014 D3E90023 		ldrd	r2, [r3]
+ 643 0018 14EB0208 		adds	r8, r4, r2
+ 644 001c 45EB0309 		adc	r9, r5, r3
+ 645              		.loc 1 227 16
+ 646 0020 054B     		ldr	r3, .L33+4
+ 647 0022 C3E90089 		strd	r8, [r3]
+ 228:Src/stm32f4xx_it.c **** }
+ 648              		.loc 1 228 1
+ 649 0026 00BF     		nop
+ 650 0028 0C37     		adds	r7, r7, #12
+ 651              	.LCFI49:
+ 652              		.cfi_def_cfa_offset 20
+ 653 002a BD46     		mov	sp, r7
+ 654              	.LCFI50:
+ 655              		.cfi_def_cfa_register 13
+ 656              		@ sp needed
+ 657 002c BDE8B003 		pop	{r4, r5, r7, r8, r9}
+ 658              	.LCFI51:
+ 659              		.cfi_restore 9
+ 660              		.cfi_restore 8
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 16
+
+
+ 661              		.cfi_restore 7
+ 662              		.cfi_restore 5
+ 663              		.cfi_restore 4
+ 664              		.cfi_def_cfa_offset 0
+ 665 0030 7047     		bx	lr
+ 666              	.L34:
+ 667 0032 00BF     		.align	2
+ 668              	.L33:
+ 669 0034 00000000 		.word	count
+ 670 0038 00000000 		.word	difs_count_obd
+ 671              		.cfi_endproc
+ 672              	.LFE145:
+ 674              		.section	.text.setms_timecount_obd2,"ax",%progbits
+ 675              		.align	1
+ 676              		.global	setms_timecount_obd2
+ 677              		.syntax unified
+ 678              		.thumb
+ 679              		.thumb_func
+ 681              	setms_timecount_obd2:
+ 682              	.LFB146:
+ 229:Src/stm32f4xx_it.c **** 
+ 230:Src/stm32f4xx_it.c **** void setms_timecount_obd2(uint32_t set_count)
+ 231:Src/stm32f4xx_it.c **** {
+ 683              		.loc 1 231 1
+ 684              		.cfi_startproc
+ 685              		@ args = 0, pretend = 0, frame = 8
+ 686              		@ frame_needed = 1, uses_anonymous_args = 0
+ 687              		@ link register save eliminated.
+ 688 0000 2DE9B003 		push	{r4, r5, r7, r8, r9}
+ 689              	.LCFI52:
+ 690              		.cfi_def_cfa_offset 20
+ 691              		.cfi_offset 4, -20
+ 692              		.cfi_offset 5, -16
+ 693              		.cfi_offset 7, -12
+ 694              		.cfi_offset 8, -8
+ 695              		.cfi_offset 9, -4
+ 696 0004 83B0     		sub	sp, sp, #12
+ 697              	.LCFI53:
+ 698              		.cfi_def_cfa_offset 32
+ 699 0006 00AF     		add	r7, sp, #0
+ 700              	.LCFI54:
+ 701              		.cfi_def_cfa_register 7
+ 702 0008 7860     		str	r0, [r7, #4]
+ 232:Src/stm32f4xx_it.c **** 	difs_count_obd2=count +((set_count*ms_devider)/ms_multiple);
+ 703              		.loc 1 232 48
+ 704 000a 7B68     		ldr	r3, [r7, #4]
+ 705 000c 0022     		movs	r2, #0
+ 706 000e 1C46     		mov	r4, r3
+ 707 0010 1546     		mov	r5, r2
+ 708              		.loc 1 232 24
+ 709 0012 084B     		ldr	r3, .L36
+ 710 0014 D3E90023 		ldrd	r2, [r3]
+ 711 0018 14EB0208 		adds	r8, r4, r2
+ 712 001c 45EB0309 		adc	r9, r5, r3
+ 713              		.loc 1 232 17
+ 714 0020 054B     		ldr	r3, .L36+4
+ 715 0022 C3E90089 		strd	r8, [r3]
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 17
+
+
+ 233:Src/stm32f4xx_it.c **** }
+ 716              		.loc 1 233 1
+ 717 0026 00BF     		nop
+ 718 0028 0C37     		adds	r7, r7, #12
+ 719              	.LCFI55:
+ 720              		.cfi_def_cfa_offset 20
+ 721 002a BD46     		mov	sp, r7
+ 722              	.LCFI56:
+ 723              		.cfi_def_cfa_register 13
+ 724              		@ sp needed
+ 725 002c BDE8B003 		pop	{r4, r5, r7, r8, r9}
+ 726              	.LCFI57:
+ 727              		.cfi_restore 9
+ 728              		.cfi_restore 8
+ 729              		.cfi_restore 7
+ 730              		.cfi_restore 5
+ 731              		.cfi_restore 4
+ 732              		.cfi_def_cfa_offset 0
+ 733 0030 7047     		bx	lr
+ 734              	.L37:
+ 735 0032 00BF     		.align	2
+ 736              	.L36:
+ 737 0034 00000000 		.word	count
+ 738 0038 00000000 		.word	difs_count_obd2
+ 739              		.cfi_endproc
+ 740              	.LFE146:
+ 742              		.section	.text.setms_timecount_HTGP,"ax",%progbits
+ 743              		.align	1
+ 744              		.global	setms_timecount_HTGP
+ 745              		.syntax unified
+ 746              		.thumb
+ 747              		.thumb_func
+ 749              	setms_timecount_HTGP:
+ 750              	.LFB147:
+ 234:Src/stm32f4xx_it.c **** 
+ 235:Src/stm32f4xx_it.c **** void setms_timecount_HTGP(uint32_t set_count)
+ 236:Src/stm32f4xx_it.c **** {
+ 751              		.loc 1 236 1
+ 752              		.cfi_startproc
+ 753              		@ args = 0, pretend = 0, frame = 8
+ 754              		@ frame_needed = 1, uses_anonymous_args = 0
+ 755              		@ link register save eliminated.
+ 756 0000 2DE9B003 		push	{r4, r5, r7, r8, r9}
+ 757              	.LCFI58:
+ 758              		.cfi_def_cfa_offset 20
+ 759              		.cfi_offset 4, -20
+ 760              		.cfi_offset 5, -16
+ 761              		.cfi_offset 7, -12
+ 762              		.cfi_offset 8, -8
+ 763              		.cfi_offset 9, -4
+ 764 0004 83B0     		sub	sp, sp, #12
+ 765              	.LCFI59:
+ 766              		.cfi_def_cfa_offset 32
+ 767 0006 00AF     		add	r7, sp, #0
+ 768              	.LCFI60:
+ 769              		.cfi_def_cfa_register 7
+ 770 0008 7860     		str	r0, [r7, #4]
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 18
+
+
+ 237:Src/stm32f4xx_it.c **** 	difs_count_HTGP=count +((set_count*ms_devider)/ms_multiple);
+ 771              		.loc 1 237 48
+ 772 000a 7B68     		ldr	r3, [r7, #4]
+ 773 000c 0022     		movs	r2, #0
+ 774 000e 1C46     		mov	r4, r3
+ 775 0010 1546     		mov	r5, r2
+ 776              		.loc 1 237 24
+ 777 0012 084B     		ldr	r3, .L39
+ 778 0014 D3E90023 		ldrd	r2, [r3]
+ 779 0018 14EB0208 		adds	r8, r4, r2
+ 780 001c 45EB0309 		adc	r9, r5, r3
+ 781              		.loc 1 237 17
+ 782 0020 054B     		ldr	r3, .L39+4
+ 783 0022 C3E90089 		strd	r8, [r3]
+ 238:Src/stm32f4xx_it.c **** }
+ 784              		.loc 1 238 1
+ 785 0026 00BF     		nop
+ 786 0028 0C37     		adds	r7, r7, #12
+ 787              	.LCFI61:
+ 788              		.cfi_def_cfa_offset 20
+ 789 002a BD46     		mov	sp, r7
+ 790              	.LCFI62:
+ 791              		.cfi_def_cfa_register 13
+ 792              		@ sp needed
+ 793 002c BDE8B003 		pop	{r4, r5, r7, r8, r9}
+ 794              	.LCFI63:
+ 795              		.cfi_restore 9
+ 796              		.cfi_restore 8
+ 797              		.cfi_restore 7
+ 798              		.cfi_restore 5
+ 799              		.cfi_restore 4
+ 800              		.cfi_def_cfa_offset 0
+ 801 0030 7047     		bx	lr
+ 802              	.L40:
+ 803 0032 00BF     		.align	2
+ 804              	.L39:
+ 805 0034 00000000 		.word	count
+ 806 0038 00000000 		.word	difs_count_HTGP
+ 807              		.cfi_endproc
+ 808              	.LFE147:
+ 810              		.section	.text.dif_count,"ax",%progbits
+ 811              		.align	1
+ 812              		.global	dif_count
+ 813              		.syntax unified
+ 814              		.thumb
+ 815              		.thumb_func
+ 817              	dif_count:
+ 818              	.LFB148:
+ 239:Src/stm32f4xx_it.c **** 
+ 240:Src/stm32f4xx_it.c **** //---------------------cheak for reach to time------------------------//5�S
+ 241:Src/stm32f4xx_it.c **** 
+ 242:Src/stm32f4xx_it.c **** uint8_t dif_count()
+ 243:Src/stm32f4xx_it.c **** {
+ 819              		.loc 1 243 1
+ 820              		.cfi_startproc
+ 821              		@ args = 0, pretend = 0, frame = 0
+ 822              		@ frame_needed = 1, uses_anonymous_args = 0
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 19
+
+
+ 823              		@ link register save eliminated.
+ 824 0000 80B4     		push	{r7}
+ 825              	.LCFI64:
+ 826              		.cfi_def_cfa_offset 4
+ 827              		.cfi_offset 7, -4
+ 828 0002 00AF     		add	r7, sp, #0
+ 829              	.LCFI65:
+ 830              		.cfi_def_cfa_register 7
+ 244:Src/stm32f4xx_it.c **** 	if(difs_count>=count)
+ 831              		.loc 1 244 15
+ 832 0004 084B     		ldr	r3, .L44
+ 833 0006 D3E90001 		ldrd	r0, [r3]
+ 834 000a 084B     		ldr	r3, .L44+4
+ 835 000c D3E90023 		ldrd	r2, [r3]
+ 836              		.loc 1 244 4
+ 837 0010 9042     		cmp	r0, r2
+ 838 0012 71EB0303 		sbcs	r3, r1, r3
+ 839 0016 01D3     		bcc	.L42
+ 245:Src/stm32f4xx_it.c **** 		return 0;
+ 840              		.loc 1 245 10
+ 841 0018 0023     		movs	r3, #0
+ 842 001a 00E0     		b	.L43
+ 843              	.L42:
+ 246:Src/stm32f4xx_it.c **** 	
+ 247:Src/stm32f4xx_it.c **** 	return 1;
+ 844              		.loc 1 247 9
+ 845 001c 0123     		movs	r3, #1
+ 846              	.L43:
+ 248:Src/stm32f4xx_it.c **** 	
+ 249:Src/stm32f4xx_it.c **** }
+ 847              		.loc 1 249 1
+ 848 001e 1846     		mov	r0, r3
+ 849 0020 BD46     		mov	sp, r7
+ 850              	.LCFI66:
+ 851              		.cfi_def_cfa_register 13
+ 852              		@ sp needed
+ 853 0022 5DF8047B 		ldr	r7, [sp], #4
+ 854              	.LCFI67:
+ 855              		.cfi_restore 7
+ 856              		.cfi_def_cfa_offset 0
+ 857 0026 7047     		bx	lr
+ 858              	.L45:
+ 859              		.align	2
+ 860              	.L44:
+ 861 0028 00000000 		.word	difs_count
+ 862 002c 00000000 		.word	count
+ 863              		.cfi_endproc
+ 864              	.LFE148:
+ 866              		.section	.text.dif_count_obd,"ax",%progbits
+ 867              		.align	1
+ 868              		.global	dif_count_obd
+ 869              		.syntax unified
+ 870              		.thumb
+ 871              		.thumb_func
+ 873              	dif_count_obd:
+ 874              	.LFB149:
+ 250:Src/stm32f4xx_it.c **** 
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 20
+
+
+ 251:Src/stm32f4xx_it.c **** uint8_t dif_count_obd()
+ 252:Src/stm32f4xx_it.c **** {
+ 875              		.loc 1 252 1
+ 876              		.cfi_startproc
+ 877              		@ args = 0, pretend = 0, frame = 0
+ 878              		@ frame_needed = 1, uses_anonymous_args = 0
+ 879              		@ link register save eliminated.
+ 880 0000 80B4     		push	{r7}
+ 881              	.LCFI68:
+ 882              		.cfi_def_cfa_offset 4
+ 883              		.cfi_offset 7, -4
+ 884 0002 00AF     		add	r7, sp, #0
+ 885              	.LCFI69:
+ 886              		.cfi_def_cfa_register 7
+ 253:Src/stm32f4xx_it.c **** 	if(difs_count_obd>=count)
+ 887              		.loc 1 253 19
+ 888 0004 084B     		ldr	r3, .L49
+ 889 0006 D3E90001 		ldrd	r0, [r3]
+ 890 000a 084B     		ldr	r3, .L49+4
+ 891 000c D3E90023 		ldrd	r2, [r3]
+ 892              		.loc 1 253 4
+ 893 0010 9042     		cmp	r0, r2
+ 894 0012 71EB0303 		sbcs	r3, r1, r3
+ 895 0016 01D3     		bcc	.L47
+ 254:Src/stm32f4xx_it.c **** 		return 0;
+ 896              		.loc 1 254 10
+ 897 0018 0023     		movs	r3, #0
+ 898 001a 00E0     		b	.L48
+ 899              	.L47:
+ 255:Src/stm32f4xx_it.c **** 	
+ 256:Src/stm32f4xx_it.c **** 	return 1;
+ 900              		.loc 1 256 9
+ 901 001c 0123     		movs	r3, #1
+ 902              	.L48:
+ 257:Src/stm32f4xx_it.c **** 	
+ 258:Src/stm32f4xx_it.c **** }
+ 903              		.loc 1 258 1
+ 904 001e 1846     		mov	r0, r3
+ 905 0020 BD46     		mov	sp, r7
+ 906              	.LCFI70:
+ 907              		.cfi_def_cfa_register 13
+ 908              		@ sp needed
+ 909 0022 5DF8047B 		ldr	r7, [sp], #4
+ 910              	.LCFI71:
+ 911              		.cfi_restore 7
+ 912              		.cfi_def_cfa_offset 0
+ 913 0026 7047     		bx	lr
+ 914              	.L50:
+ 915              		.align	2
+ 916              	.L49:
+ 917 0028 00000000 		.word	difs_count_obd
+ 918 002c 00000000 		.word	count
+ 919              		.cfi_endproc
+ 920              	.LFE149:
+ 922              		.section	.text.dif_count_obd2,"ax",%progbits
+ 923              		.align	1
+ 924              		.global	dif_count_obd2
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 21
+
+
+ 925              		.syntax unified
+ 926              		.thumb
+ 927              		.thumb_func
+ 929              	dif_count_obd2:
+ 930              	.LFB150:
+ 259:Src/stm32f4xx_it.c **** 
+ 260:Src/stm32f4xx_it.c **** 
+ 261:Src/stm32f4xx_it.c **** uint8_t dif_count_obd2()
+ 262:Src/stm32f4xx_it.c **** {
+ 931              		.loc 1 262 1
+ 932              		.cfi_startproc
+ 933              		@ args = 0, pretend = 0, frame = 0
+ 934              		@ frame_needed = 1, uses_anonymous_args = 0
+ 935              		@ link register save eliminated.
+ 936 0000 80B4     		push	{r7}
+ 937              	.LCFI72:
+ 938              		.cfi_def_cfa_offset 4
+ 939              		.cfi_offset 7, -4
+ 940 0002 00AF     		add	r7, sp, #0
+ 941              	.LCFI73:
+ 942              		.cfi_def_cfa_register 7
+ 263:Src/stm32f4xx_it.c **** 	if(difs_count_obd2>=count)
+ 943              		.loc 1 263 20
+ 944 0004 084B     		ldr	r3, .L54
+ 945 0006 D3E90001 		ldrd	r0, [r3]
+ 946 000a 084B     		ldr	r3, .L54+4
+ 947 000c D3E90023 		ldrd	r2, [r3]
+ 948              		.loc 1 263 4
+ 949 0010 9042     		cmp	r0, r2
+ 950 0012 71EB0303 		sbcs	r3, r1, r3
+ 951 0016 01D3     		bcc	.L52
+ 264:Src/stm32f4xx_it.c **** 		return 0;
+ 952              		.loc 1 264 10
+ 953 0018 0023     		movs	r3, #0
+ 954 001a 00E0     		b	.L53
+ 955              	.L52:
+ 265:Src/stm32f4xx_it.c **** 	
+ 266:Src/stm32f4xx_it.c **** 	return 1;
+ 956              		.loc 1 266 9
+ 957 001c 0123     		movs	r3, #1
+ 958              	.L53:
+ 267:Src/stm32f4xx_it.c **** 	
+ 268:Src/stm32f4xx_it.c **** }
+ 959              		.loc 1 268 1
+ 960 001e 1846     		mov	r0, r3
+ 961 0020 BD46     		mov	sp, r7
+ 962              	.LCFI74:
+ 963              		.cfi_def_cfa_register 13
+ 964              		@ sp needed
+ 965 0022 5DF8047B 		ldr	r7, [sp], #4
+ 966              	.LCFI75:
+ 967              		.cfi_restore 7
+ 968              		.cfi_def_cfa_offset 0
+ 969 0026 7047     		bx	lr
+ 970              	.L55:
+ 971              		.align	2
+ 972              	.L54:
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 22
+
+
+ 973 0028 00000000 		.word	difs_count_obd2
+ 974 002c 00000000 		.word	count
+ 975              		.cfi_endproc
+ 976              	.LFE150:
+ 978              		.section	.text.dif_count_HTGP,"ax",%progbits
+ 979              		.align	1
+ 980              		.global	dif_count_HTGP
+ 981              		.syntax unified
+ 982              		.thumb
+ 983              		.thumb_func
+ 985              	dif_count_HTGP:
+ 986              	.LFB151:
+ 269:Src/stm32f4xx_it.c **** 
+ 270:Src/stm32f4xx_it.c **** 
+ 271:Src/stm32f4xx_it.c **** uint8_t dif_count_HTGP()
+ 272:Src/stm32f4xx_it.c **** {
+ 987              		.loc 1 272 1
+ 988              		.cfi_startproc
+ 989              		@ args = 0, pretend = 0, frame = 0
+ 990              		@ frame_needed = 1, uses_anonymous_args = 0
+ 991              		@ link register save eliminated.
+ 992 0000 80B4     		push	{r7}
+ 993              	.LCFI76:
+ 994              		.cfi_def_cfa_offset 4
+ 995              		.cfi_offset 7, -4
+ 996 0002 00AF     		add	r7, sp, #0
+ 997              	.LCFI77:
+ 998              		.cfi_def_cfa_register 7
+ 273:Src/stm32f4xx_it.c **** 	if(difs_count_HTGP>=count)
+ 999              		.loc 1 273 20
+ 1000 0004 084B     		ldr	r3, .L59
+ 1001 0006 D3E90001 		ldrd	r0, [r3]
+ 1002 000a 084B     		ldr	r3, .L59+4
+ 1003 000c D3E90023 		ldrd	r2, [r3]
+ 1004              		.loc 1 273 4
+ 1005 0010 9042     		cmp	r0, r2
+ 1006 0012 71EB0303 		sbcs	r3, r1, r3
+ 1007 0016 01D3     		bcc	.L57
+ 274:Src/stm32f4xx_it.c **** 		return 0;
+ 1008              		.loc 1 274 10
+ 1009 0018 0023     		movs	r3, #0
+ 1010 001a 00E0     		b	.L58
+ 1011              	.L57:
+ 275:Src/stm32f4xx_it.c **** 	
+ 276:Src/stm32f4xx_it.c **** 	return 1;
+ 1012              		.loc 1 276 9
+ 1013 001c 0123     		movs	r3, #1
+ 1014              	.L58:
+ 277:Src/stm32f4xx_it.c **** 	
+ 278:Src/stm32f4xx_it.c **** }
+ 1015              		.loc 1 278 1
+ 1016 001e 1846     		mov	r0, r3
+ 1017 0020 BD46     		mov	sp, r7
+ 1018              	.LCFI78:
+ 1019              		.cfi_def_cfa_register 13
+ 1020              		@ sp needed
+ 1021 0022 5DF8047B 		ldr	r7, [sp], #4
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 23
+
+
+ 1022              	.LCFI79:
+ 1023              		.cfi_restore 7
+ 1024              		.cfi_def_cfa_offset 0
+ 1025 0026 7047     		bx	lr
+ 1026              	.L60:
+ 1027              		.align	2
+ 1028              	.L59:
+ 1029 0028 00000000 		.word	difs_count_HTGP
+ 1030 002c 00000000 		.word	count
+ 1031              		.cfi_endproc
+ 1032              	.LFE151:
+ 1034              		.section	.text.USART2_IRQHandler,"ax",%progbits
+ 1035              		.align	1
+ 1036              		.global	USART2_IRQHandler
+ 1037              		.syntax unified
+ 1038              		.thumb
+ 1039              		.thumb_func
+ 1041              	USART2_IRQHandler:
+ 1042              	.LFB152:
+ 279:Src/stm32f4xx_it.c **** 
+ 280:Src/stm32f4xx_it.c **** 
+ 281:Src/stm32f4xx_it.c **** void USART2_IRQHandler(void)
+ 282:Src/stm32f4xx_it.c **** {
+ 1043              		.loc 1 282 1
+ 1044              		.cfi_startproc
+ 1045              		@ args = 0, pretend = 0, frame = 0
+ 1046              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1047 0000 80B5     		push	{r7, lr}
+ 1048              	.LCFI80:
+ 1049              		.cfi_def_cfa_offset 8
+ 1050              		.cfi_offset 7, -8
+ 1051              		.cfi_offset 14, -4
+ 1052 0002 00AF     		add	r7, sp, #0
+ 1053              	.LCFI81:
+ 1054              		.cfi_def_cfa_register 7
+ 283:Src/stm32f4xx_it.c **** 	
+ 284:Src/stm32f4xx_it.c ****   AT_buf[AT_count]=USART_ReceiveData(USART2);
+ 1055              		.loc 1 284 20
+ 1056 0004 0C48     		ldr	r0, .L62
+ 1057 0006 FFF7FEFF 		bl	USART_ReceiveData
+ 1058 000a 0346     		mov	r3, r0
+ 1059 000c 1946     		mov	r1, r3
+ 1060              		.loc 1 284 9
+ 1061 000e 0B4B     		ldr	r3, .L62+4
+ 1062 0010 1B88     		ldrh	r3, [r3]
+ 1063 0012 1A46     		mov	r2, r3
+ 1064              		.loc 1 284 19
+ 1065 0014 C9B2     		uxtb	r1, r1
+ 1066 0016 0A4B     		ldr	r3, .L62+8
+ 1067 0018 9954     		strb	r1, [r3, r2]
+ 285:Src/stm32f4xx_it.c ****   AT_count++;
+ 1068              		.loc 1 285 11
+ 1069 001a 084B     		ldr	r3, .L62+4
+ 1070 001c 1B88     		ldrh	r3, [r3]
+ 1071 001e 0133     		adds	r3, r3, #1
+ 1072 0020 9AB2     		uxth	r2, r3
+ 1073 0022 064B     		ldr	r3, .L62+4
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 24
+
+
+ 1074 0024 1A80     		strh	r2, [r3]	@ movhi
+ 286:Src/stm32f4xx_it.c ****   setms_timecount(1);
+ 1075              		.loc 1 286 3
+ 1076 0026 0120     		movs	r0, #1
+ 1077 0028 FFF7FEFF 		bl	setms_timecount
+ 287:Src/stm32f4xx_it.c ****   USART_ClearFlag(USART2,USART_FLAG_RXNE);
+ 1078              		.loc 1 287 3
+ 1079 002c 2021     		movs	r1, #32
+ 1080 002e 0248     		ldr	r0, .L62
+ 1081 0030 FFF7FEFF 		bl	USART_ClearFlag
+ 288:Src/stm32f4xx_it.c **** }
+ 1082              		.loc 1 288 1
+ 1083 0034 00BF     		nop
+ 1084 0036 80BD     		pop	{r7, pc}
+ 1085              	.L63:
+ 1086              		.align	2
+ 1087              	.L62:
+ 1088 0038 00440040 		.word	1073759232
+ 1089 003c 00000000 		.word	AT_count
+ 1090 0040 00000000 		.word	AT_buf
+ 1091              		.cfi_endproc
+ 1092              	.LFE152:
+ 1094              		.section	.text.USART1_IRQHandler,"ax",%progbits
+ 1095              		.align	1
+ 1096              		.global	USART1_IRQHandler
+ 1097              		.syntax unified
+ 1098              		.thumb
+ 1099              		.thumb_func
+ 1101              	USART1_IRQHandler:
+ 1102              	.LFB153:
+ 289:Src/stm32f4xx_it.c **** 
+ 290:Src/stm32f4xx_it.c **** 
+ 291:Src/stm32f4xx_it.c **** 
+ 292:Src/stm32f4xx_it.c **** 
+ 293:Src/stm32f4xx_it.c **** 
+ 294:Src/stm32f4xx_it.c **** void USART1_IRQHandler(void)
+ 295:Src/stm32f4xx_it.c **** {
+ 1103              		.loc 1 295 1
+ 1104              		.cfi_startproc
+ 1105              		@ args = 0, pretend = 0, frame = 0
+ 1106              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1107 0000 80B5     		push	{r7, lr}
+ 1108              	.LCFI82:
+ 1109              		.cfi_def_cfa_offset 8
+ 1110              		.cfi_offset 7, -8
+ 1111              		.cfi_offset 14, -4
+ 1112 0002 00AF     		add	r7, sp, #0
+ 1113              	.LCFI83:
+ 1114              		.cfi_def_cfa_register 7
+ 296:Src/stm32f4xx_it.c **** 	if(OBD_RCV_T==1)
+ 1115              		.loc 1 296 14
+ 1116 0004 0E4B     		ldr	r3, .L66
+ 1117 0006 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1118              		.loc 1 296 4
+ 1119 0008 012B     		cmp	r3, #1
+ 1120 000a 10D1     		bne	.L65
+ 297:Src/stm32f4xx_it.c **** 	{
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 25
+
+
+ 298:Src/stm32f4xx_it.c **** 	  obd_data[obd_count]=USART_ReceiveData(USART1);
+ 1121              		.loc 1 298 24
+ 1122 000c 0D48     		ldr	r0, .L66+4
+ 1123 000e FFF7FEFF 		bl	USART_ReceiveData
+ 1124 0012 0346     		mov	r3, r0
+ 1125 0014 1946     		mov	r1, r3
+ 1126              		.loc 1 298 12
+ 1127 0016 0C4B     		ldr	r3, .L66+8
+ 1128 0018 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1129 001a 1A46     		mov	r2, r3
+ 1130              		.loc 1 298 23
+ 1131 001c C9B2     		uxtb	r1, r1
+ 1132 001e 0B4B     		ldr	r3, .L66+12
+ 1133 0020 9954     		strb	r1, [r3, r2]
+ 299:Src/stm32f4xx_it.c **** 		obd_count++;
+ 1134              		.loc 1 299 12
+ 1135 0022 094B     		ldr	r3, .L66+8
+ 1136 0024 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1137 0026 0133     		adds	r3, r3, #1
+ 1138 0028 DAB2     		uxtb	r2, r3
+ 1139 002a 074B     		ldr	r3, .L66+8
+ 1140 002c 1A70     		strb	r2, [r3]
+ 1141              	.L65:
+ 300:Src/stm32f4xx_it.c **** 	}
+ 301:Src/stm32f4xx_it.c **** 	setms_timecount_obd(1);
+ 1142              		.loc 1 301 2
+ 1143 002e 0120     		movs	r0, #1
+ 1144 0030 FFF7FEFF 		bl	setms_timecount_obd
+ 302:Src/stm32f4xx_it.c **** 		
+ 303:Src/stm32f4xx_it.c **** 	USART_ClearFlag(USART1,USART_FLAG_RXNE);
+ 1145              		.loc 1 303 2
+ 1146 0034 2021     		movs	r1, #32
+ 1147 0036 0348     		ldr	r0, .L66+4
+ 1148 0038 FFF7FEFF 		bl	USART_ClearFlag
+ 304:Src/stm32f4xx_it.c **** }
+ 1149              		.loc 1 304 1
+ 1150 003c 00BF     		nop
+ 1151 003e 80BD     		pop	{r7, pc}
+ 1152              	.L67:
+ 1153              		.align	2
+ 1154              	.L66:
+ 1155 0040 00000000 		.word	OBD_RCV_T
+ 1156 0044 00100140 		.word	1073811456
+ 1157 0048 00000000 		.word	obd_count
+ 1158 004c 00000000 		.word	obd_data
+ 1159              		.cfi_endproc
+ 1160              	.LFE153:
+ 1162              		.section	.text.TIM2_IRQHandler,"ax",%progbits
+ 1163              		.align	1
+ 1164              		.global	TIM2_IRQHandler
+ 1165              		.syntax unified
+ 1166              		.thumb
+ 1167              		.thumb_func
+ 1169              	TIM2_IRQHandler:
+ 1170              	.LFB154:
+ 305:Src/stm32f4xx_it.c **** 
+ 306:Src/stm32f4xx_it.c **** 
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 26
+
+
+ 307:Src/stm32f4xx_it.c **** void TIM2_IRQHandler(void)
+ 308:Src/stm32f4xx_it.c **** {
+ 1171              		.loc 1 308 1
+ 1172              		.cfi_startproc
+ 1173              		@ args = 0, pretend = 0, frame = 0
+ 1174              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1175 0000 80B5     		push	{r7, lr}
+ 1176              	.LCFI84:
+ 1177              		.cfi_def_cfa_offset 8
+ 1178              		.cfi_offset 7, -8
+ 1179              		.cfi_offset 14, -4
+ 1180 0002 00AF     		add	r7, sp, #0
+ 1181              	.LCFI85:
+ 1182              		.cfi_def_cfa_register 7
+ 309:Src/stm32f4xx_it.c **** 	TIM_ClearITPendingBit(TIM2 , TIM_FLAG_Update);
+ 1183              		.loc 1 309 2
+ 1184 0004 0121     		movs	r1, #1
+ 1185 0006 4FF08040 		mov	r0, #1073741824
+ 1186 000a FFF7FEFF 		bl	TIM_ClearITPendingBit
+ 310:Src/stm32f4xx_it.c **** 	init_obd++;
+ 1187              		.loc 1 310 10
+ 1188 000e 044B     		ldr	r3, .L69
+ 1189 0010 1B88     		ldrh	r3, [r3]
+ 1190 0012 0133     		adds	r3, r3, #1
+ 1191 0014 9AB2     		uxth	r2, r3
+ 1192 0016 024B     		ldr	r3, .L69
+ 1193 0018 1A80     		strh	r2, [r3]	@ movhi
+ 311:Src/stm32f4xx_it.c **** }
+ 1194              		.loc 1 311 1
+ 1195 001a 00BF     		nop
+ 1196 001c 80BD     		pop	{r7, pc}
+ 1197              	.L70:
+ 1198 001e 00BF     		.align	2
+ 1199              	.L69:
+ 1200 0020 00000000 		.word	init_obd
+ 1201              		.cfi_endproc
+ 1202              	.LFE154:
+ 1204              		.section	.text.CAN1_RX0_IRQHandler,"ax",%progbits
+ 1205              		.align	1
+ 1206              		.global	CAN1_RX0_IRQHandler
+ 1207              		.syntax unified
+ 1208              		.thumb
+ 1209              		.thumb_func
+ 1211              	CAN1_RX0_IRQHandler:
+ 1212              	.LFB155:
+ 312:Src/stm32f4xx_it.c **** 
+ 313:Src/stm32f4xx_it.c **** 
+ 314:Src/stm32f4xx_it.c **** void CAN1_RX0_IRQHandler(void)
+ 315:Src/stm32f4xx_it.c **** {
+ 1213              		.loc 1 315 1
+ 1214              		.cfi_startproc
+ 1215              		@ args = 0, pretend = 0, frame = 24
+ 1216              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1217 0000 80B5     		push	{r7, lr}
+ 1218              	.LCFI86:
+ 1219              		.cfi_def_cfa_offset 8
+ 1220              		.cfi_offset 7, -8
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 27
+
+
+ 1221              		.cfi_offset 14, -4
+ 1222 0002 86B0     		sub	sp, sp, #24
+ 1223              	.LCFI87:
+ 1224              		.cfi_def_cfa_offset 32
+ 1225 0004 00AF     		add	r7, sp, #0
+ 1226              	.LCFI88:
+ 1227              		.cfi_def_cfa_register 7
+ 316:Src/stm32f4xx_it.c ****   int i=0;
+ 1228              		.loc 1 316 7
+ 1229 0006 0023     		movs	r3, #0
+ 1230 0008 7B61     		str	r3, [r7, #20]
+ 317:Src/stm32f4xx_it.c **** 
+ 318:Src/stm32f4xx_it.c ****   CanRxMsg RxMessage;
+ 319:Src/stm32f4xx_it.c **** 
+ 320:Src/stm32f4xx_it.c ****   CAN_Receive(CAN1, CAN_FIFO0, &RxMessage);
+ 1231              		.loc 1 320 3
+ 1232 000a 3B46     		mov	r3, r7
+ 1233 000c 1A46     		mov	r2, r3
+ 1234 000e 0021     		movs	r1, #0
+ 1235 0010 1448     		ldr	r0, .L75
+ 1236 0012 FFF7FEFF 		bl	CAN_Receive
+ 321:Src/stm32f4xx_it.c ****   if((RxMessage.StdId==0x7E8)&&(c_rcv_flag==0))
+ 1237              		.loc 1 321 16
+ 1238 0016 3B68     		ldr	r3, [r7]
+ 1239              		.loc 1 321 5
+ 1240 0018 B3F5FD6F 		cmp	r3, #2024
+ 1241 001c 19D1     		bne	.L72
+ 1242              		.loc 1 321 43 discriminator 1
+ 1243 001e 124B     		ldr	r3, .L75+4
+ 1244 0020 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1245              		.loc 1 321 30 discriminator 1
+ 1246 0022 002B     		cmp	r3, #0
+ 1247 0024 15D1     		bne	.L72
+ 322:Src/stm32f4xx_it.c ****   {
+ 323:Src/stm32f4xx_it.c ****     for(i=0;i<8;i++)
+ 1248              		.loc 1 323 10
+ 1249 0026 0023     		movs	r3, #0
+ 1250 0028 7B61     		str	r3, [r7, #20]
+ 1251              		.loc 1 323 5
+ 1252 002a 0CE0     		b	.L73
+ 1253              	.L74:
+ 324:Src/stm32f4xx_it.c ****     c_dt[i]= RxMessage.Data[i];
+ 1254              		.loc 1 324 28 discriminator 3
+ 1255 002c 07F10B02 		add	r2, r7, #11
+ 1256 0030 7B69     		ldr	r3, [r7, #20]
+ 1257 0032 1344     		add	r3, r3, r2
+ 1258 0034 1978     		ldrb	r1, [r3]	@ zero_extendqisi2
+ 1259              		.loc 1 324 12 discriminator 3
+ 1260 0036 0D4A     		ldr	r2, .L75+8
+ 1261 0038 7B69     		ldr	r3, [r7, #20]
+ 1262 003a 1344     		add	r3, r3, r2
+ 1263 003c 0A46     		mov	r2, r1
+ 1264 003e 1A70     		strb	r2, [r3]
+ 323:Src/stm32f4xx_it.c ****     c_dt[i]= RxMessage.Data[i];
+ 1265              		.loc 1 323 18 discriminator 3
+ 1266 0040 7B69     		ldr	r3, [r7, #20]
+ 1267 0042 0133     		adds	r3, r3, #1
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 28
+
+
+ 1268 0044 7B61     		str	r3, [r7, #20]
+ 1269              	.L73:
+ 323:Src/stm32f4xx_it.c ****     c_dt[i]= RxMessage.Data[i];
+ 1270              		.loc 1 323 5 discriminator 1
+ 1271 0046 7B69     		ldr	r3, [r7, #20]
+ 1272 0048 072B     		cmp	r3, #7
+ 1273 004a EFDD     		ble	.L74
+ 325:Src/stm32f4xx_it.c ****     c_rcv_flag=1;
+ 1274              		.loc 1 325 15
+ 1275 004c 064B     		ldr	r3, .L75+4
+ 1276 004e 0122     		movs	r2, #1
+ 1277 0050 1A70     		strb	r2, [r3]
+ 1278              	.L72:
+ 326:Src/stm32f4xx_it.c ****   }
+ 327:Src/stm32f4xx_it.c ****   CAN_ClearFlag(CAN1,CAN_IT_FMP0);
+ 1279              		.loc 1 327 3
+ 1280 0052 0221     		movs	r1, #2
+ 1281 0054 0348     		ldr	r0, .L75
+ 1282 0056 FFF7FEFF 		bl	CAN_ClearFlag
+ 328:Src/stm32f4xx_it.c **** }
+ 1283              		.loc 1 328 1
+ 1284 005a 00BF     		nop
+ 1285 005c 1837     		adds	r7, r7, #24
+ 1286              	.LCFI89:
+ 1287              		.cfi_def_cfa_offset 8
+ 1288 005e BD46     		mov	sp, r7
+ 1289              	.LCFI90:
+ 1290              		.cfi_def_cfa_register 13
+ 1291              		@ sp needed
+ 1292 0060 80BD     		pop	{r7, pc}
+ 1293              	.L76:
+ 1294 0062 00BF     		.align	2
+ 1295              	.L75:
+ 1296 0064 00640040 		.word	1073767424
+ 1297 0068 00000000 		.word	c_rcv_flag
+ 1298 006c 00000000 		.word	c_dt
+ 1299              		.cfi_endproc
+ 1300              	.LFE155:
+ 1302              		.text
+ 1303              	.Letext0:
+ 1304              		.file 2 "c:\\program files (x86)\\gnu arm embedded toolchain\\10 2021.10\\arm-none-eabi\\include\\
+ 1305              		.file 3 "c:\\program files (x86)\\gnu arm embedded toolchain\\10 2021.10\\arm-none-eabi\\include\\
+ 1306              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
+ 1307              		.file 5 "Drivers/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_can.h"
+ 1308              		.file 6 "User/Inc/OBDII.h"
+ 1309              		.file 7 "User/Inc/Blu.h"
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 29
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32f4xx_it.c
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:23     .bss.program_s:00000000 program_s
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:24     .bss.program_s:00000000 $d
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:30     .bss.count:00000000 count
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:27     .bss.count:00000000 $d
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:37     .bss.difs_count:00000000 difs_count
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:34     .bss.difs_count:00000000 $d
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:44     .bss.difs_count1:00000000 difs_count1
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:41     .bss.difs_count1:00000000 $d
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:51     .bss.difs_count_obd:00000000 difs_count_obd
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:48     .bss.difs_count_obd:00000000 $d
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:58     .bss.difs_count_obd2:00000000 difs_count_obd2
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:55     .bss.difs_count_obd2:00000000 $d
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:65     .bss.difs_count_HTGP:00000000 difs_count_HTGP
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:62     .bss.difs_count_HTGP:00000000 $d
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:68     .text.NMI_Handler:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:74     .text.NMI_Handler:00000000 NMI_Handler
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:104    .text.HardFault_Handler:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:110    .text.HardFault_Handler:00000000 HardFault_Handler
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:131    .text.MemManage_Handler:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:137    .text.MemManage_Handler:00000000 MemManage_Handler
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:158    .text.BusFault_Handler:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:164    .text.BusFault_Handler:00000000 BusFault_Handler
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:185    .text.UsageFault_Handler:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:191    .text.UsageFault_Handler:00000000 UsageFault_Handler
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:212    .text.DebugMon_Handler:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:218    .text.DebugMon_Handler:00000000 DebugMon_Handler
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:247    .text.GeterSystick:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:253    .text.GeterSystick:00000000 GeterSystick
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:285    .text.GeterSystick:00000018 $d
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:290    .text.seterSystick:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:296    .text.seterSystick:00000000 seterSystick
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:335    .text.seterSystick:00000020 $d
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:340    .text.Geterms:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:346    .text.Geterms:00000000 Geterms
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:378    .text.Geterms:00000018 $d
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:383    .text.Geterus:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:389    .text.Geterus:00000000 Geterus
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:462    .text.Geterus:00000074 $d
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:467    .text.setms_timecount:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:473    .text.setms_timecount:00000000 setms_timecount
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:529    .text.setms_timecount:00000034 $d
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:535    .text.setus_timecount:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:541    .text.setus_timecount:00000000 setus_timecount
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:600    .text.setus_timecount:0000003c $d
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:607    .text.setms_timecount_obd:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:613    .text.setms_timecount_obd:00000000 setms_timecount_obd
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:669    .text.setms_timecount_obd:00000034 $d
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:675    .text.setms_timecount_obd2:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:681    .text.setms_timecount_obd2:00000000 setms_timecount_obd2
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:737    .text.setms_timecount_obd2:00000034 $d
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:743    .text.setms_timecount_HTGP:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:749    .text.setms_timecount_HTGP:00000000 setms_timecount_HTGP
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:805    .text.setms_timecount_HTGP:00000034 $d
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:811    .text.dif_count:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:817    .text.dif_count:00000000 dif_count
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s 			page 30
+
+
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:861    .text.dif_count:00000028 $d
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:867    .text.dif_count_obd:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:873    .text.dif_count_obd:00000000 dif_count_obd
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:917    .text.dif_count_obd:00000028 $d
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:923    .text.dif_count_obd2:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:929    .text.dif_count_obd2:00000000 dif_count_obd2
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:973    .text.dif_count_obd2:00000028 $d
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:979    .text.dif_count_HTGP:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:985    .text.dif_count_HTGP:00000000 dif_count_HTGP
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:1029   .text.dif_count_HTGP:00000028 $d
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:1035   .text.USART2_IRQHandler:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:1041   .text.USART2_IRQHandler:00000000 USART2_IRQHandler
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:1088   .text.USART2_IRQHandler:00000038 $d
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:1095   .text.USART1_IRQHandler:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:1101   .text.USART1_IRQHandler:00000000 USART1_IRQHandler
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:1155   .text.USART1_IRQHandler:00000040 $d
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:1163   .text.TIM2_IRQHandler:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:1169   .text.TIM2_IRQHandler:00000000 TIM2_IRQHandler
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:1200   .text.TIM2_IRQHandler:00000020 $d
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:1205   .text.CAN1_RX0_IRQHandler:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:1211   .text.CAN1_RX0_IRQHandler:00000000 CAN1_RX0_IRQHandler
+C:\Users\Admin\AppData\Local\Temp\ccCOIuqd.s:1296   .text.CAN1_RX0_IRQHandler:00000064 $d
+
+UNDEFINED SYMBOLS
+USART_ReceiveData
+USART_ClearFlag
+AT_count
+AT_buf
+OBD_RCV_T
+obd_count
+obd_data
+TIM_ClearITPendingBit
+init_obd
+CAN_Receive
+CAN_ClearFlag
+c_rcv_flag
+c_dt

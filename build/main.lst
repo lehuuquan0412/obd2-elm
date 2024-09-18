@@ -1,0 +1,1219 @@
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 6
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"main.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.global	send_cmd_obd
+  20              		.section	.bss.send_cmd_obd,"aw",%nobits
+  23              	send_cmd_obd:
+  24 0000 00       		.space	1
+  25              		.global	init_obd_port
+  26              		.section	.bss.init_obd_port,"aw",%nobits
+  29              	init_obd_port:
+  30 0000 00       		.space	1
+  31              		.global	k_cmd4
+  32              		.section	.bss.k_cmd4,"aw",%nobits
+  33              		.align	2
+  36              	k_cmd4:
+  37 0000 00000000 		.space	30
+  37      00000000 
+  37      00000000 
+  37      00000000 
+  37      00000000 
+  38              		.global	msg_log
+  39              		.section	.bss.msg_log,"aw",%nobits
+  40              		.align	2
+  43              	msg_log:
+  44 0000 00000000 		.space	500
+  44      00000000 
+  44      00000000 
+  44      00000000 
+  44      00000000 
+  45              		.global	msg_size
+  46              		.section	.bss.msg_size,"aw",%nobits
+  47              		.align	2
+  50              	msg_size:
+  51 0000 00000000 		.space	4
+  52              		.global	size_obd
+  53              		.section	.bss.size_obd,"aw",%nobits
+  56              	size_obd:
+  57 0000 00       		.space	1
+  58              		.global	obd_send_flag
+  59              		.section	.bss.obd_send_flag,"aw",%nobits
+  62              	obd_send_flag:
+  63 0000 00       		.space	1
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s 			page 2
+
+
+  64              		.section	.text.delay,"ax",%progbits
+  65              		.align	1
+  66              		.global	delay
+  67              		.syntax unified
+  68              		.thumb
+  69              		.thumb_func
+  71              	delay:
+  72              	.LFB138:
+  73              		.file 1 "Src/main.c"
+   1:Src/main.c    **** 
+   2:Src/main.c    **** 
+   3:Src/main.c    **** 
+   4:Src/main.c    **** #include "stm32f4xx.h"
+   5:Src/main.c    **** #include "stm32f4xx_flash.h"
+   6:Src/main.c    **** #include "stm32f4xx_it.h"
+   7:Src/main.c    **** #include "stm32f4xx_tim.h"
+   8:Src/main.c    **** #include "stm32f4xx_iwdg.h"
+   9:Src/main.c    **** 
+  10:Src/main.c    **** #include <stdio.h>
+  11:Src/main.c    **** 
+  12:Src/main.c    **** #include "config.h"
+  13:Src/main.c    **** #include "OBDII.h"
+  14:Src/main.c    **** #include "Blu.h"
+  15:Src/main.c    **** #include "hexString.h"
+  16:Src/main.c    **** 
+  17:Src/main.c    **** #include "FreeRTOS.h"
+  18:Src/main.c    **** #include "task.h"
+  19:Src/main.c    **** 
+  20:Src/main.c    **** 
+  21:Src/main.c    **** uint8_t send_cmd_obd=0;
+  22:Src/main.c    **** uint8_t init_obd_port=0;
+  23:Src/main.c    **** uint8_t k_cmd4[30]={0};
+  24:Src/main.c    **** char msg_log[500]={0};
+  25:Src/main.c    **** int msg_size=0;
+  26:Src/main.c    **** uint8_t size_obd=0;
+  27:Src/main.c    **** uint8_t obd_send_flag=0;
+  28:Src/main.c    **** 
+  29:Src/main.c    **** 
+  30:Src/main.c    **** void delay()
+  31:Src/main.c    **** {
+  74              		.loc 1 31 1
+  75              		.cfi_startproc
+  76              		@ args = 0, pretend = 0, frame = 8
+  77              		@ frame_needed = 1, uses_anonymous_args = 0
+  78              		@ link register save eliminated.
+  79 0000 80B4     		push	{r7}
+  80              	.LCFI0:
+  81              		.cfi_def_cfa_offset 4
+  82              		.cfi_offset 7, -4
+  83 0002 83B0     		sub	sp, sp, #12
+  84              	.LCFI1:
+  85              		.cfi_def_cfa_offset 16
+  86 0004 00AF     		add	r7, sp, #0
+  87              	.LCFI2:
+  88              		.cfi_def_cfa_register 7
+  32:Src/main.c    ****     uint32_t i;
+  33:Src/main.c    ****     for(i=0;i<0x1fffff;i++);		
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s 			page 3
+
+
+  89              		.loc 1 33 10
+  90 0006 0023     		movs	r3, #0
+  91 0008 7B60     		str	r3, [r7, #4]
+  92              		.loc 1 33 5
+  93 000a 02E0     		b	.L2
+  94              	.L3:
+  95              		.loc 1 33 25 discriminator 3
+  96 000c 7B68     		ldr	r3, [r7, #4]
+  97 000e 0133     		adds	r3, r3, #1
+  98 0010 7B60     		str	r3, [r7, #4]
+  99              	.L2:
+ 100              		.loc 1 33 5 discriminator 1
+ 101 0012 7B68     		ldr	r3, [r7, #4]
+ 102 0014 044A     		ldr	r2, .L4
+ 103 0016 9342     		cmp	r3, r2
+ 104 0018 F8D9     		bls	.L3
+  34:Src/main.c    **** }
+ 105              		.loc 1 34 1
+ 106 001a 00BF     		nop
+ 107 001c 00BF     		nop
+ 108 001e 0C37     		adds	r7, r7, #12
+ 109              	.LCFI3:
+ 110              		.cfi_def_cfa_offset 4
+ 111 0020 BD46     		mov	sp, r7
+ 112              	.LCFI4:
+ 113              		.cfi_def_cfa_register 13
+ 114              		@ sp needed
+ 115 0022 5DF8047B 		ldr	r7, [sp], #4
+ 116              	.LCFI5:
+ 117              		.cfi_restore 7
+ 118              		.cfi_def_cfa_offset 0
+ 119 0026 7047     		bx	lr
+ 120              	.L5:
+ 121              		.align	2
+ 122              	.L4:
+ 123 0028 FEFF1F00 		.word	2097150
+ 124              		.cfi_endproc
+ 125              	.LFE138:
+ 127              		.section	.rodata
+ 128              		.align	2
+ 129              	.LC0:
+ 130 0000 0D0D454C 		.ascii	"\015\015ELM327 v2.1\015\015>\000"
+ 130      4D333237 
+ 130      2076322E 
+ 130      310D0D3E 
+ 130      00
+ 131 0011 000000   		.align	2
+ 132              	.LC1:
+ 133 0014 4E4F2044 		.ascii	"NO DATA\015\015>\000"
+ 133      4154410D 
+ 133      0D3E00
+ 134              		.section	.text.OBD_Task,"ax",%progbits
+ 135              		.align	1
+ 136              		.global	OBD_Task
+ 137              		.syntax unified
+ 138              		.thumb
+ 139              		.thumb_func
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s 			page 4
+
+
+ 141              	OBD_Task:
+ 142              	.LFB139:
+  35:Src/main.c    **** 
+  36:Src/main.c    **** /*******************************************************************************
+  37:Src/main.c    **** * Function Name  : OBD_Task
+  38:Src/main.c    **** * Description    : task for handleing obdii (init and send/receive data)
+  39:Src/main.c    **** * Input          : None
+  40:Src/main.c    **** * Output         : None
+  41:Src/main.c    **** * Return         : None
+  42:Src/main.c    **** *******************************************************************************/		
+  43:Src/main.c    **** 
+  44:Src/main.c    **** void OBD_Task(void * pvArg)
+  45:Src/main.c    **** {
+ 143              		.loc 1 45 1
+ 144              		.cfi_startproc
+ 145              		@ args = 0, pretend = 0, frame = 104
+ 146              		@ frame_needed = 1, uses_anonymous_args = 0
+ 147 0000 80B5     		push	{r7, lr}
+ 148              	.LCFI6:
+ 149              		.cfi_def_cfa_offset 8
+ 150              		.cfi_offset 7, -8
+ 151              		.cfi_offset 14, -4
+ 152 0002 9AB0     		sub	sp, sp, #104
+ 153              	.LCFI7:
+ 154              		.cfi_def_cfa_offset 112
+ 155 0004 00AF     		add	r7, sp, #0
+ 156              	.LCFI8:
+ 157              		.cfi_def_cfa_register 7
+ 158 0006 7860     		str	r0, [r7, #4]
+  46:Src/main.c    ****     uint8_t k_cmd[20];
+  47:Src/main.c    **** 	uint8_t k_cmd2[30];
+  48:Src/main.c    **** 	char bl_cmd2[30];
+  49:Src/main.c    **** 	uint8_t obd_sz=0;
+ 159              		.loc 1 49 10
+ 160 0008 0023     		movs	r3, #0
+ 161 000a FB72     		strb	r3, [r7, #11]
+  50:Src/main.c    **** 	int i, j=0;
+ 162              		.loc 1 50 9
+ 163 000c 0023     		movs	r3, #0
+ 164 000e 3B66     		str	r3, [r7, #96]
+  51:Src/main.c    **** 	OBD_Serial_Init();
+ 165              		.loc 1 51 2
+ 166 0010 FFF7FEFF 		bl	OBD_Serial_Init
+ 167              	.L23:
+  52:Src/main.c    **** 	
+  53:Src/main.c    **** 
+  54:Src/main.c    **** 	while(1)
+  55:Src/main.c    **** 	{
+  56:Src/main.c    **** 		vTaskDelay(1);
+ 168              		.loc 1 56 3
+ 169 0014 0120     		movs	r0, #1
+ 170 0016 FFF7FEFF 		bl	vTaskDelay
+  57:Src/main.c    ****         if(obd_send_flag)	
+ 171              		.loc 1 57 12
+ 172 001a 814B     		ldr	r3, .L24
+ 173 001c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 174              		.loc 1 57 11
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s 			page 5
+
+
+ 175 001e 002B     		cmp	r3, #0
+ 176 0020 18D0     		beq	.L7
+  58:Src/main.c    ****         {		 
+  59:Src/main.c    ****             obd_sz=0;
+ 177              		.loc 1 59 19
+ 178 0022 0023     		movs	r3, #0
+ 179 0024 FB72     		strb	r3, [r7, #11]
+  60:Src/main.c    ****             OBD_Send_Recive(k_cmd4,(size_obd/3)+1,k_cmd2,&obd_sz);
+ 180              		.loc 1 60 13
+ 181 0026 7F4B     		ldr	r3, .L24+4
+ 182 0028 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 183 002a 7F4A     		ldr	r2, .L24+8
+ 184 002c A2FB0323 		umull	r2, r3, r2, r3
+ 185 0030 5B08     		lsrs	r3, r3, #1
+ 186 0032 DBB2     		uxtb	r3, r3
+ 187 0034 0133     		adds	r3, r3, #1
+ 188 0036 D9B2     		uxtb	r1, r3
+ 189 0038 07F10B03 		add	r3, r7, #11
+ 190 003c 07F12C02 		add	r2, r7, #44
+ 191 0040 7A48     		ldr	r0, .L24+12
+ 192 0042 FFF7FEFF 		bl	OBD_Send_Recive
+  61:Src/main.c    ****             obd_send_flag=0;
+ 193              		.loc 1 61 26
+ 194 0046 764B     		ldr	r3, .L24
+ 195 0048 0022     		movs	r2, #0
+ 196 004a 1A70     		strb	r2, [r3]
+  62:Src/main.c    ****             size_obd=0;
+ 197              		.loc 1 62 21
+ 198 004c 754B     		ldr	r3, .L24+4
+ 199 004e 0022     		movs	r2, #0
+ 200 0050 1A70     		strb	r2, [r3]
+ 201 0052 1FE0     		b	.L8
+ 202              	.L7:
+  63:Src/main.c    ****         }else if(init_obd_port == 1)
+ 203              		.loc 1 63 32
+ 204 0054 764B     		ldr	r3, .L24+16
+ 205 0056 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 206              		.loc 1 63 17
+ 207 0058 012B     		cmp	r3, #1
+ 208 005a 1BD1     		bne	.L8
+  64:Src/main.c    ****         {	
+  65:Src/main.c    ****             while(obd_sz!=3)
+ 209              		.loc 1 65 18
+ 210 005c 0DE0     		b	.L9
+ 211              	.L10:
+  66:Src/main.c    ****             {
+  67:Src/main.c    ****                 OBD_ecu_Init();
+ 212              		.loc 1 67 17
+ 213 005e FFF7FEFF 		bl	OBD_ecu_Init
+  68:Src/main.c    ****                 k_cmd[0]=0x81;
+ 214              		.loc 1 68 25
+ 215 0062 8123     		movs	r3, #129
+ 216 0064 87F84C30 		strb	r3, [r7, #76]
+  69:Src/main.c    ****                 OBD_Send_Recive(k_cmd,1,k_cmd2,&obd_sz);
+ 217              		.loc 1 69 17
+ 218 0068 07F10B03 		add	r3, r7, #11
+ 219 006c 07F12C02 		add	r2, r7, #44
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s 			page 6
+
+
+ 220 0070 07F14C00 		add	r0, r7, #76
+ 221 0074 0121     		movs	r1, #1
+ 222 0076 FFF7FEFF 		bl	OBD_Send_Recive
+ 223              	.L9:
+  65:Src/main.c    ****             {
+ 224              		.loc 1 65 25
+ 225 007a FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+  65:Src/main.c    ****             {
+ 226              		.loc 1 65 18
+ 227 007c 032B     		cmp	r3, #3
+ 228 007e EED1     		bne	.L10
+  70:Src/main.c    **** 
+  71:Src/main.c    ****             }
+  72:Src/main.c    ****             init_obd_port=2;
+ 229              		.loc 1 72 26
+ 230 0080 6B4B     		ldr	r3, .L24+16
+ 231 0082 0222     		movs	r2, #2
+ 232 0084 1A70     		strb	r2, [r3]
+  73:Src/main.c    ****             BL_Send(deviceId,16,"\r\rELM327 v2.1\r\r>");
+ 233              		.loc 1 73 13
+ 234 0086 6B4B     		ldr	r3, .L24+20
+ 235 0088 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 236 008a 6B4A     		ldr	r2, .L24+24
+ 237 008c 1021     		movs	r1, #16
+ 238 008e 1846     		mov	r0, r3
+ 239 0090 FFF7FEFF 		bl	BL_Send
+ 240              	.L8:
+  74:Src/main.c    ****         }
+  75:Src/main.c    **** 
+  76:Src/main.c    **** 	
+  77:Src/main.c    **** 		if(send_cmd_obd==1)
+ 241              		.loc 1 77 18
+ 242 0094 694B     		ldr	r3, .L24+28
+ 243 0096 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 244              		.loc 1 77 5
+ 245 0098 012B     		cmp	r3, #1
+ 246 009a 02D1     		bne	.L11
+  78:Src/main.c    **** 			j++;
+ 247              		.loc 1 78 5
+ 248 009c 3B6E     		ldr	r3, [r7, #96]
+ 249 009e 0133     		adds	r3, r3, #1
+ 250 00a0 3B66     		str	r3, [r7, #96]
+ 251              	.L11:
+  79:Src/main.c    **** 
+  80:Src/main.c    **** 		if(obd_sz!=0)
+ 252              		.loc 1 80 12
+ 253 00a2 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 254              		.loc 1 80 5
+ 255 00a4 002B     		cmp	r3, #0
+ 256 00a6 78D0     		beq	.L12
+  81:Src/main.c    **** 		{
+  82:Src/main.c    **** 			send_cmd_obd=0;
+ 257              		.loc 1 82 16
+ 258 00a8 644B     		ldr	r3, .L24+28
+ 259 00aa 0022     		movs	r2, #0
+ 260 00ac 1A70     		strb	r2, [r3]
+  83:Src/main.c    **** 			j=0;
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s 			page 7
+
+
+ 261              		.loc 1 83 5
+ 262 00ae 0023     		movs	r3, #0
+ 263 00b0 3B66     		str	r3, [r7, #96]
+  84:Src/main.c    **** 			for(i=0;i<30;i++)
+ 264              		.loc 1 84 9
+ 265 00b2 0023     		movs	r3, #0
+ 266 00b4 7B66     		str	r3, [r7, #100]
+ 267              		.loc 1 84 4
+ 268 00b6 08E0     		b	.L13
+ 269              	.L14:
+  85:Src/main.c    **** 			    bl_cmd2[i]=0;
+ 270              		.loc 1 85 18 discriminator 3
+ 271 00b8 07F10C02 		add	r2, r7, #12
+ 272 00bc 7B6E     		ldr	r3, [r7, #100]
+ 273 00be 1344     		add	r3, r3, r2
+ 274 00c0 0022     		movs	r2, #0
+ 275 00c2 1A70     		strb	r2, [r3]
+  84:Src/main.c    **** 			for(i=0;i<30;i++)
+ 276              		.loc 1 84 18 discriminator 3
+ 277 00c4 7B6E     		ldr	r3, [r7, #100]
+ 278 00c6 0133     		adds	r3, r3, #1
+ 279 00c8 7B66     		str	r3, [r7, #100]
+ 280              	.L13:
+  84:Src/main.c    **** 			for(i=0;i<30;i++)
+ 281              		.loc 1 84 4 discriminator 1
+ 282 00ca 7B6E     		ldr	r3, [r7, #100]
+ 283 00cc 1D2B     		cmp	r3, #29
+ 284 00ce F3DD     		ble	.L14
+  86:Src/main.c    **** 			for(i=0;i<obd_sz;i++)
+ 285              		.loc 1 86 9
+ 286 00d0 0023     		movs	r3, #0
+ 287 00d2 7B66     		str	r3, [r7, #100]
+ 288              		.loc 1 86 4
+ 289 00d4 11E0     		b	.L15
+ 290              	.L16:
+  87:Src/main.c    **** 			{
+  88:Src/main.c    **** 			    bytesToHexString(&bl_cmd2[i*3],k_cmd2[i]);			
+ 291              		.loc 1 88 35 discriminator 3
+ 292 00d6 7A6E     		ldr	r2, [r7, #100]
+ 293 00d8 1346     		mov	r3, r2
+ 294 00da 5B00     		lsls	r3, r3, #1
+ 295 00dc 1344     		add	r3, r3, r2
+ 296              		.loc 1 88 8 discriminator 3
+ 297 00de 07F10C02 		add	r2, r7, #12
+ 298 00e2 D018     		adds	r0, r2, r3
+ 299 00e4 07F12C02 		add	r2, r7, #44
+ 300 00e8 7B6E     		ldr	r3, [r7, #100]
+ 301 00ea 1344     		add	r3, r3, r2
+ 302 00ec 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 303 00ee 1946     		mov	r1, r3
+ 304 00f0 FFF7FEFF 		bl	bytesToHexString
+  86:Src/main.c    **** 			for(i=0;i<obd_sz;i++)
+ 305              		.loc 1 86 22 discriminator 3
+ 306 00f4 7B6E     		ldr	r3, [r7, #100]
+ 307 00f6 0133     		adds	r3, r3, #1
+ 308 00f8 7B66     		str	r3, [r7, #100]
+ 309              	.L15:
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s 			page 8
+
+
+  86:Src/main.c    **** 			for(i=0;i<obd_sz;i++)
+ 310              		.loc 1 86 13 discriminator 1
+ 311 00fa FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 312 00fc 1A46     		mov	r2, r3
+  86:Src/main.c    **** 			for(i=0;i<obd_sz;i++)
+ 313              		.loc 1 86 4 discriminator 1
+ 314 00fe 7B6E     		ldr	r3, [r7, #100]
+ 315 0100 9342     		cmp	r3, r2
+ 316 0102 E8DB     		blt	.L16
+  89:Src/main.c    **** 			}
+  90:Src/main.c    **** 			bl_cmd2[(obd_sz*3)-1]=0x20;
+ 317              		.loc 1 90 19
+ 318 0104 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 319 0106 1A46     		mov	r2, r3
+ 320 0108 1346     		mov	r3, r2
+ 321 010a 5B00     		lsls	r3, r3, #1
+ 322 010c 1344     		add	r3, r3, r2
+ 323              		.loc 1 90 22
+ 324 010e 013B     		subs	r3, r3, #1
+ 325              		.loc 1 90 25
+ 326 0110 6833     		adds	r3, r3, #104
+ 327 0112 3B44     		add	r3, r3, r7
+ 328 0114 2022     		movs	r2, #32
+ 329 0116 03F85C2C 		strb	r2, [r3, #-92]
+  91:Src/main.c    **** 			bl_cmd2[(obd_sz*3)]=0x0d;
+ 330              		.loc 1 91 19
+ 331 011a FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 332 011c 1A46     		mov	r2, r3
+ 333 011e 1346     		mov	r3, r2
+ 334 0120 5B00     		lsls	r3, r3, #1
+ 335 0122 1344     		add	r3, r3, r2
+ 336              		.loc 1 91 23
+ 337 0124 6833     		adds	r3, r3, #104
+ 338 0126 3B44     		add	r3, r3, r7
+ 339 0128 0D22     		movs	r2, #13
+ 340 012a 03F85C2C 		strb	r2, [r3, #-92]
+  92:Src/main.c    **** 			bl_cmd2[(obd_sz*3)+1]=0x0d;
+ 341              		.loc 1 92 19
+ 342 012e FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 343 0130 1A46     		mov	r2, r3
+ 344 0132 1346     		mov	r3, r2
+ 345 0134 5B00     		lsls	r3, r3, #1
+ 346 0136 1344     		add	r3, r3, r2
+ 347              		.loc 1 92 22
+ 348 0138 0133     		adds	r3, r3, #1
+ 349              		.loc 1 92 25
+ 350 013a 6833     		adds	r3, r3, #104
+ 351 013c 3B44     		add	r3, r3, r7
+ 352 013e 0D22     		movs	r2, #13
+ 353 0140 03F85C2C 		strb	r2, [r3, #-92]
+  93:Src/main.c    **** 			bl_cmd2[(obd_sz*3)+2]=0x3E;
+ 354              		.loc 1 93 19
+ 355 0144 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 356 0146 1A46     		mov	r2, r3
+ 357 0148 1346     		mov	r3, r2
+ 358 014a 5B00     		lsls	r3, r3, #1
+ 359 014c 1344     		add	r3, r3, r2
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s 			page 9
+
+
+ 360              		.loc 1 93 22
+ 361 014e 0233     		adds	r3, r3, #2
+ 362              		.loc 1 93 25
+ 363 0150 6833     		adds	r3, r3, #104
+ 364 0152 3B44     		add	r3, r3, r7
+ 365 0154 3E22     		movs	r2, #62
+ 366 0156 03F85C2C 		strb	r2, [r3, #-92]
+  94:Src/main.c    **** 			BL_Send(deviceId,(obd_sz*3)+3,bl_cmd2);
+ 367              		.loc 1 94 4
+ 368 015a 364B     		ldr	r3, .L24+20
+ 369 015c 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 370 015e FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 371 0160 0133     		adds	r3, r3, #1
+ 372 0162 DBB2     		uxtb	r3, r3
+ 373 0164 1A46     		mov	r2, r3
+ 374 0166 5200     		lsls	r2, r2, #1
+ 375 0168 1344     		add	r3, r3, r2
+ 376 016a DBB2     		uxtb	r3, r3
+ 377 016c 07F10C02 		add	r2, r7, #12
+ 378 0170 1946     		mov	r1, r3
+ 379 0172 FFF7FEFF 		bl	BL_Send
+  95:Src/main.c    **** 			obd_sz=0;
+ 380              		.loc 1 95 10
+ 381 0176 0023     		movs	r3, #0
+ 382 0178 FB72     		strb	r3, [r7, #11]
+  96:Src/main.c    **** 			for(i=0;i<30;i++)
+ 383              		.loc 1 96 9
+ 384 017a 0023     		movs	r3, #0
+ 385 017c 7B66     		str	r3, [r7, #100]
+ 386              		.loc 1 96 4
+ 387 017e 08E0     		b	.L17
+ 388              	.L18:
+  97:Src/main.c    **** 			    k_cmd2[i]=0;
+ 389              		.loc 1 97 17 discriminator 3
+ 390 0180 07F12C02 		add	r2, r7, #44
+ 391 0184 7B6E     		ldr	r3, [r7, #100]
+ 392 0186 1344     		add	r3, r3, r2
+ 393 0188 0022     		movs	r2, #0
+ 394 018a 1A70     		strb	r2, [r3]
+  96:Src/main.c    **** 			for(i=0;i<30;i++)
+ 395              		.loc 1 96 18 discriminator 3
+ 396 018c 7B6E     		ldr	r3, [r7, #100]
+ 397 018e 0133     		adds	r3, r3, #1
+ 398 0190 7B66     		str	r3, [r7, #100]
+ 399              	.L17:
+  96:Src/main.c    **** 			for(i=0;i<30;i++)
+ 400              		.loc 1 96 4 discriminator 1
+ 401 0192 7B6E     		ldr	r3, [r7, #100]
+ 402 0194 1D2B     		cmp	r3, #29
+ 403 0196 F3DD     		ble	.L18
+ 404 0198 0EE0     		b	.L19
+ 405              	.L12:
+  98:Src/main.c    **** 		}
+  99:Src/main.c    **** 		
+ 100:Src/main.c    **** 		else if(j==50)
+ 406              		.loc 1 100 10
+ 407 019a 3B6E     		ldr	r3, [r7, #96]
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s 			page 10
+
+
+ 408 019c 322B     		cmp	r3, #50
+ 409 019e 0BD1     		bne	.L19
+ 101:Src/main.c    **** 		{
+ 102:Src/main.c    **** 			BL_Send(deviceId,10,"NO DATA\r\r>");
+ 410              		.loc 1 102 4
+ 411 01a0 244B     		ldr	r3, .L24+20
+ 412 01a2 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 413 01a4 264A     		ldr	r2, .L24+32
+ 414 01a6 0A21     		movs	r1, #10
+ 415 01a8 1846     		mov	r0, r3
+ 416 01aa FFF7FEFF 		bl	BL_Send
+ 103:Src/main.c    **** 			j=0;	
+ 417              		.loc 1 103 5
+ 418 01ae 0023     		movs	r3, #0
+ 419 01b0 3B66     		str	r3, [r7, #96]
+ 104:Src/main.c    ****             send_cmd_obd=0;			
+ 420              		.loc 1 104 25
+ 421 01b2 224B     		ldr	r3, .L24+28
+ 422 01b4 0022     		movs	r2, #0
+ 423 01b6 1A70     		strb	r2, [r3]
+ 424              	.L19:
+ 105:Src/main.c    **** 		}
+ 106:Src/main.c    **** 	
+ 107:Src/main.c    **** 		if((dif_count_obd2())&(init_obd_port==2))
+ 425              		.loc 1 107 7
+ 426 01b8 FFF7FEFF 		bl	dif_count_obd2
+ 427 01bc 0346     		mov	r3, r0
+ 428 01be 1A46     		mov	r2, r3
+ 429              		.loc 1 107 39
+ 430 01c0 1B4B     		ldr	r3, .L24+16
+ 431 01c2 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 432 01c4 022B     		cmp	r3, #2
+ 433 01c6 0CBF     		ite	eq
+ 434 01c8 0123     		moveq	r3, #1
+ 435 01ca 0023     		movne	r3, #0
+ 436 01cc DBB2     		uxtb	r3, r3
+ 437              		.loc 1 107 24
+ 438 01ce 1340     		ands	r3, r3, r2
+ 439              		.loc 1 107 5
+ 440 01d0 002B     		cmp	r3, #0
+ 441 01d2 3FF41FAF 		beq	.L23
+ 108:Src/main.c    **** 		{
+ 109:Src/main.c    **** 			k_cmd[0]=0x01;
+ 442              		.loc 1 109 12
+ 443 01d6 0123     		movs	r3, #1
+ 444 01d8 87F84C30 		strb	r3, [r7, #76]
+ 110:Src/main.c    **** 			k_cmd[1]=0x00;
+ 445              		.loc 1 110 12
+ 446 01dc 0023     		movs	r3, #0
+ 447 01de 87F84D30 		strb	r3, [r7, #77]
+ 111:Src/main.c    **** 			if(obd_sz==0)
+ 448              		.loc 1 111 13
+ 449 01e2 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 450              		.loc 1 111 6
+ 451 01e4 002B     		cmp	r3, #0
+ 452 01e6 7FF415AF 		bne	.L23
+ 112:Src/main.c    **** 			{	
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s 			page 11
+
+
+ 113:Src/main.c    **** 			OBD_Send_Recive(k_cmd,2,k_cmd2,&obd_sz);
+ 453              		.loc 1 113 4
+ 454 01ea 07F10B03 		add	r3, r7, #11
+ 455 01ee 07F12C02 		add	r2, r7, #44
+ 456 01f2 07F14C00 		add	r0, r7, #76
+ 457 01f6 0221     		movs	r1, #2
+ 458 01f8 FFF7FEFF 		bl	OBD_Send_Recive
+ 114:Src/main.c    **** 			obd_sz=0;
+ 459              		.loc 1 114 10
+ 460 01fc 0023     		movs	r3, #0
+ 461 01fe FB72     		strb	r3, [r7, #11]
+ 115:Src/main.c    **** 			for(i=0;i<30;i++)
+ 462              		.loc 1 115 9
+ 463 0200 0023     		movs	r3, #0
+ 464 0202 7B66     		str	r3, [r7, #100]
+ 465              		.loc 1 115 4
+ 466 0204 08E0     		b	.L21
+ 467              	.L22:
+ 116:Src/main.c    **** 			k_cmd2[i]=0;
+ 468              		.loc 1 116 13 discriminator 3
+ 469 0206 07F12C02 		add	r2, r7, #44
+ 470 020a 7B6E     		ldr	r3, [r7, #100]
+ 471 020c 1344     		add	r3, r3, r2
+ 472 020e 0022     		movs	r2, #0
+ 473 0210 1A70     		strb	r2, [r3]
+ 115:Src/main.c    **** 			for(i=0;i<30;i++)
+ 474              		.loc 1 115 18 discriminator 3
+ 475 0212 7B6E     		ldr	r3, [r7, #100]
+ 476 0214 0133     		adds	r3, r3, #1
+ 477 0216 7B66     		str	r3, [r7, #100]
+ 478              	.L21:
+ 115:Src/main.c    **** 			for(i=0;i<30;i++)
+ 479              		.loc 1 115 4 discriminator 1
+ 480 0218 7B6E     		ldr	r3, [r7, #100]
+ 481 021a 1D2B     		cmp	r3, #29
+ 482 021c F3DD     		ble	.L22
+  56:Src/main.c    ****         if(obd_send_flag)	
+ 483              		.loc 1 56 3
+ 484 021e F9E6     		b	.L23
+ 485              	.L25:
+ 486              		.align	2
+ 487              	.L24:
+ 488 0220 00000000 		.word	obd_send_flag
+ 489 0224 00000000 		.word	size_obd
+ 490 0228 ABAAAAAA 		.word	-1431655765
+ 491 022c 00000000 		.word	k_cmd4
+ 492 0230 00000000 		.word	init_obd_port
+ 493 0234 00000000 		.word	deviceId
+ 494 0238 00000000 		.word	.LC0
+ 495 023c 00000000 		.word	send_cmd_obd
+ 496 0240 14000000 		.word	.LC1
+ 497              		.cfi_endproc
+ 498              	.LFE139:
+ 500              		.section	.rodata
+ 501 001f 00       		.align	2
+ 502              	.LC2:
+ 503 0020 6E6F6E65 		.ascii	"none\000"
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s 			page 12
+
+
+ 503      00
+ 504 0025 000000   		.align	2
+ 505              	.LC3:
+ 506 0028 4F4B0D0D 		.ascii	"OK\015\015>\000"
+ 506      3E00
+ 507              		.section	.text.BL_Task,"ax",%progbits
+ 508              		.align	1
+ 509              		.global	BL_Task
+ 510              		.syntax unified
+ 511              		.thumb
+ 512              		.thumb_func
+ 514              	BL_Task:
+ 515              	.LFB140:
+ 117:Src/main.c    **** 			}
+ 118:Src/main.c    **** 		}	
+ 119:Src/main.c    **** 	}			
+ 120:Src/main.c    **** }
+ 121:Src/main.c    **** 
+ 122:Src/main.c    **** 
+ 123:Src/main.c    **** /*******************************************************************************
+ 124:Src/main.c    **** * Function Name  : BL_Task
+ 125:Src/main.c    **** * Description    : task for handleing bluetooth hc-05
+ 126:Src/main.c    **** * Input          : None
+ 127:Src/main.c    **** * Output         : None
+ 128:Src/main.c    **** * Return         : None
+ 129:Src/main.c    **** *******************************************************************************/	
+ 130:Src/main.c    **** 	
+ 131:Src/main.c    **** 	
+ 132:Src/main.c    **** 	
+ 133:Src/main.c    **** void BL_Task(void * pvArg)
+ 134:Src/main.c    **** {
+ 516              		.loc 1 134 1
+ 517              		.cfi_startproc
+ 518              		@ args = 0, pretend = 0, frame = 104
+ 519              		@ frame_needed = 1, uses_anonymous_args = 0
+ 520 0000 80B5     		push	{r7, lr}
+ 521              	.LCFI9:
+ 522              		.cfi_def_cfa_offset 8
+ 523              		.cfi_offset 7, -8
+ 524              		.cfi_offset 14, -4
+ 525 0002 9AB0     		sub	sp, sp, #104
+ 526              	.LCFI10:
+ 527              		.cfi_def_cfa_offset 112
+ 528 0004 00AF     		add	r7, sp, #0
+ 529              	.LCFI11:
+ 530              		.cfi_def_cfa_register 7
+ 531 0006 7860     		str	r0, [r7, #4]
+ 135:Src/main.c    ****     char  buffer_r[50];
+ 136:Src/main.c    ****     int i=0;
+ 532              		.loc 1 136 9
+ 533 0008 0023     		movs	r3, #0
+ 534 000a 7B66     		str	r3, [r7, #100]
+ 137:Src/main.c    ****     char k_cmd3[30]={0};
+ 535              		.loc 1 137 10
+ 536 000c 0023     		movs	r3, #0
+ 537 000e 3B61     		str	r3, [r7, #16]
+ 538 0010 07F11403 		add	r3, r7, #20
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s 			page 13
+
+
+ 539 0014 0022     		movs	r2, #0
+ 540 0016 1A60     		str	r2, [r3]
+ 541 0018 5A60     		str	r2, [r3, #4]
+ 542 001a 9A60     		str	r2, [r3, #8]
+ 543 001c DA60     		str	r2, [r3, #12]
+ 544 001e 1A61     		str	r2, [r3, #16]
+ 545 0020 5A61     		str	r2, [r3, #20]
+ 546 0022 1A83     		strh	r2, [r3, #24]	@ movhi
+ 138:Src/main.c    ****     char size_b=0;
+ 547              		.loc 1 138 10
+ 548 0024 0023     		movs	r3, #0
+ 549 0026 FB73     		strb	r3, [r7, #15]
+ 139:Src/main.c    ****     char check_validate=5,valid_link=0;
+ 550              		.loc 1 139 10
+ 551 0028 0523     		movs	r3, #5
+ 552 002a 87F86330 		strb	r3, [r7, #99]
+ 553              		.loc 1 139 27
+ 554 002e 0023     		movs	r3, #0
+ 555 0030 87F86230 		strb	r3, [r7, #98]
+ 140:Src/main.c    ****     BL_init();
+ 556              		.loc 1 140 5
+ 557 0034 FFF7FEFF 		bl	BL_init
+ 141:Src/main.c    ****     setms_timecount_HTGP(1500);
+ 558              		.loc 1 141 5
+ 559 0038 40F2DC50 		movw	r0, #1500
+ 560 003c FFF7FEFF 		bl	setms_timecount_HTGP
+ 561              	.L37:
+ 142:Src/main.c    **** 
+ 143:Src/main.c    ****     while(1)
+ 144:Src/main.c    ****     {
+ 145:Src/main.c    ****         IWDG_ReloadCounter();
+ 562              		.loc 1 145 9
+ 563 0040 FFF7FEFF 		bl	IWDG_ReloadCounter
+ 146:Src/main.c    ****         size_b=0;
+ 564              		.loc 1 146 15
+ 565 0044 0023     		movs	r3, #0
+ 566 0046 FB73     		strb	r3, [r7, #15]
+ 147:Src/main.c    ****         BL_Recive(buffer_r,&size_b);
+ 567              		.loc 1 147 9
+ 568 0048 07F10F02 		add	r2, r7, #15
+ 569 004c 07F13003 		add	r3, r7, #48
+ 570 0050 1146     		mov	r1, r2
+ 571 0052 1846     		mov	r0, r3
+ 572 0054 FFF7FEFF 		bl	BL_Recive
+ 148:Src/main.c    **** 
+ 149:Src/main.c    ****         if(size_b!=0)
+ 573              		.loc 1 149 18
+ 574 0058 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 575              		.loc 1 149 11
+ 576 005a 002B     		cmp	r3, #0
+ 577 005c F0D0     		beq	.L37
+ 150:Src/main.c    ****         {
+ 151:Src/main.c    ****             if((buffer_r[0]=='A')&(buffer_r[1]=='T')&(buffer_r[3]=='Z'))
+ 578              		.loc 1 151 25
+ 579 005e 97F83030 		ldrb	r3, [r7, #48]	@ zero_extendqisi2
+ 580              		.loc 1 151 34
+ 581 0062 412B     		cmp	r3, #65
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s 			page 14
+
+
+ 582 0064 0CBF     		ite	eq
+ 583 0066 0123     		moveq	r3, #1
+ 584 0068 0023     		movne	r3, #0
+ 585 006a DAB2     		uxtb	r2, r3
+ 586              		.loc 1 151 44
+ 587 006c 97F83130 		ldrb	r3, [r7, #49]	@ zero_extendqisi2
+ 588              		.loc 1 151 34
+ 589 0070 542B     		cmp	r3, #84
+ 590 0072 0CBF     		ite	eq
+ 591 0074 0123     		moveq	r3, #1
+ 592 0076 0023     		movne	r3, #0
+ 593 0078 DBB2     		uxtb	r3, r3
+ 594 007a 1340     		ands	r3, r3, r2
+ 595 007c DBB2     		uxtb	r3, r3
+ 596 007e 1A46     		mov	r2, r3
+ 597              		.loc 1 151 63
+ 598 0080 97F83330 		ldrb	r3, [r7, #51]	@ zero_extendqisi2
+ 599              		.loc 1 151 66
+ 600 0084 5A2B     		cmp	r3, #90
+ 601 0086 0CBF     		ite	eq
+ 602 0088 0123     		moveq	r3, #1
+ 603 008a 0023     		movne	r3, #0
+ 604 008c DBB2     		uxtb	r3, r3
+ 605              		.loc 1 151 53
+ 606 008e 1340     		ands	r3, r3, r2
+ 607              		.loc 1 151 15
+ 608 0090 002B     		cmp	r3, #0
+ 609 0092 03D0     		beq	.L28
+ 152:Src/main.c    ****             {
+ 153:Src/main.c    ****                 init_obd_port=1;			
+ 610              		.loc 1 153 30
+ 611 0094 4A4B     		ldr	r3, .L38
+ 612 0096 0122     		movs	r2, #1
+ 613 0098 1A70     		strb	r2, [r3]
+ 614 009a 8DE0     		b	.L29
+ 615              	.L28:
+ 154:Src/main.c    ****             } else if((buffer_r[0]=='G')&(buffer_r[1]=='E')&(buffer_r[2]=='T'))
+ 616              		.loc 1 154 32
+ 617 009c 97F83030 		ldrb	r3, [r7, #48]	@ zero_extendqisi2
+ 618              		.loc 1 154 41
+ 619 00a0 472B     		cmp	r3, #71
+ 620 00a2 0CBF     		ite	eq
+ 621 00a4 0123     		moveq	r3, #1
+ 622 00a6 0023     		movne	r3, #0
+ 623 00a8 DAB2     		uxtb	r2, r3
+ 624              		.loc 1 154 51
+ 625 00aa 97F83130 		ldrb	r3, [r7, #49]	@ zero_extendqisi2
+ 626              		.loc 1 154 41
+ 627 00ae 452B     		cmp	r3, #69
+ 628 00b0 0CBF     		ite	eq
+ 629 00b2 0123     		moveq	r3, #1
+ 630 00b4 0023     		movne	r3, #0
+ 631 00b6 DBB2     		uxtb	r3, r3
+ 632 00b8 1340     		ands	r3, r3, r2
+ 633 00ba DBB2     		uxtb	r3, r3
+ 634 00bc 1A46     		mov	r2, r3
+ 635              		.loc 1 154 70
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s 			page 15
+
+
+ 636 00be 97F83230 		ldrb	r3, [r7, #50]	@ zero_extendqisi2
+ 637              		.loc 1 154 73
+ 638 00c2 542B     		cmp	r3, #84
+ 639 00c4 0CBF     		ite	eq
+ 640 00c6 0123     		moveq	r3, #1
+ 641 00c8 0023     		movne	r3, #0
+ 642 00ca DBB2     		uxtb	r3, r3
+ 643              		.loc 1 154 60
+ 644 00cc 1340     		ands	r3, r3, r2
+ 645              		.loc 1 154 22
+ 646 00ce 002B     		cmp	r3, #0
+ 647 00d0 27D0     		beq	.L30
+ 155:Src/main.c    ****             {
+ 156:Src/main.c    ****                 if(msg_size>10)
+ 648              		.loc 1 156 28
+ 649 00d2 3C4B     		ldr	r3, .L38+4
+ 650 00d4 1B68     		ldr	r3, [r3]
+ 651              		.loc 1 156 19
+ 652 00d6 0A2B     		cmp	r3, #10
+ 653 00d8 1BDD     		ble	.L31
+ 157:Src/main.c    ****                 {
+ 158:Src/main.c    ****                     BL_Send(deviceId, msg_size,msg_log);
+ 654              		.loc 1 158 21
+ 655 00da 3B4B     		ldr	r3, .L38+8
+ 656 00dc 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 657 00de 394A     		ldr	r2, .L38+4
+ 658 00e0 1268     		ldr	r2, [r2]
+ 659 00e2 D1B2     		uxtb	r1, r2
+ 660 00e4 394A     		ldr	r2, .L38+12
+ 661 00e6 1846     		mov	r0, r3
+ 662 00e8 FFF7FEFF 		bl	BL_Send
+ 159:Src/main.c    ****                     for(i=0;i<500;i++)
+ 663              		.loc 1 159 26
+ 664 00ec 0023     		movs	r3, #0
+ 665 00ee 7B66     		str	r3, [r7, #100]
+ 666              		.loc 1 159 21
+ 667 00f0 07E0     		b	.L32
+ 668              	.L33:
+ 160:Src/main.c    ****                     msg_log[i]=0;
+ 669              		.loc 1 160 31 discriminator 3
+ 670 00f2 364A     		ldr	r2, .L38+12
+ 671 00f4 7B6E     		ldr	r3, [r7, #100]
+ 672 00f6 1344     		add	r3, r3, r2
+ 673 00f8 0022     		movs	r2, #0
+ 674 00fa 1A70     		strb	r2, [r3]
+ 159:Src/main.c    ****                     for(i=0;i<500;i++)
+ 675              		.loc 1 159 36 discriminator 3
+ 676 00fc 7B6E     		ldr	r3, [r7, #100]
+ 677 00fe 0133     		adds	r3, r3, #1
+ 678 0100 7B66     		str	r3, [r7, #100]
+ 679              	.L32:
+ 159:Src/main.c    ****                     for(i=0;i<500;i++)
+ 680              		.loc 1 159 21 discriminator 1
+ 681 0102 7B6E     		ldr	r3, [r7, #100]
+ 682 0104 B3F5FA7F 		cmp	r3, #500
+ 683 0108 F3DB     		blt	.L33
+ 161:Src/main.c    ****                     msg_size=0;
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s 			page 16
+
+
+ 684              		.loc 1 161 29
+ 685 010a 2E4B     		ldr	r3, .L38+4
+ 686 010c 0022     		movs	r2, #0
+ 687 010e 1A60     		str	r2, [r3]
+ 688 0110 52E0     		b	.L29
+ 689              	.L31:
+ 162:Src/main.c    ****                 }
+ 163:Src/main.c    ****                 else
+ 164:Src/main.c    ****                 BL_Send(deviceId,4,"none");
+ 690              		.loc 1 164 17
+ 691 0112 2D4B     		ldr	r3, .L38+8
+ 692 0114 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 693 0116 2E4A     		ldr	r2, .L38+16
+ 694 0118 0421     		movs	r1, #4
+ 695 011a 1846     		mov	r0, r3
+ 696 011c FFF7FEFF 		bl	BL_Send
+ 697 0120 4AE0     		b	.L29
+ 698              	.L30:
+ 165:Src/main.c    ****             }else if((buffer_r[0]=='A')&(buffer_r[1]=='T')&(buffer_r[3]!='Z'))
+ 699              		.loc 1 165 31
+ 700 0122 97F83030 		ldrb	r3, [r7, #48]	@ zero_extendqisi2
+ 701              		.loc 1 165 40
+ 702 0126 412B     		cmp	r3, #65
+ 703 0128 0CBF     		ite	eq
+ 704 012a 0123     		moveq	r3, #1
+ 705 012c 0023     		movne	r3, #0
+ 706 012e DAB2     		uxtb	r2, r3
+ 707              		.loc 1 165 50
+ 708 0130 97F83130 		ldrb	r3, [r7, #49]	@ zero_extendqisi2
+ 709              		.loc 1 165 40
+ 710 0134 542B     		cmp	r3, #84
+ 711 0136 0CBF     		ite	eq
+ 712 0138 0123     		moveq	r3, #1
+ 713 013a 0023     		movne	r3, #0
+ 714 013c DBB2     		uxtb	r3, r3
+ 715 013e 1340     		ands	r3, r3, r2
+ 716 0140 DBB2     		uxtb	r3, r3
+ 717 0142 1A46     		mov	r2, r3
+ 718              		.loc 1 165 69
+ 719 0144 97F83330 		ldrb	r3, [r7, #51]	@ zero_extendqisi2
+ 720              		.loc 1 165 72
+ 721 0148 5A2B     		cmp	r3, #90
+ 722 014a 14BF     		ite	ne
+ 723 014c 0123     		movne	r3, #1
+ 724 014e 0023     		moveq	r3, #0
+ 725 0150 DBB2     		uxtb	r3, r3
+ 726              		.loc 1 165 59
+ 727 0152 1340     		ands	r3, r3, r2
+ 728              		.loc 1 165 21
+ 729 0154 002B     		cmp	r3, #0
+ 730 0156 07D0     		beq	.L34
+ 166:Src/main.c    ****                         BL_Send(deviceId,5,"OK\r\r>");
+ 731              		.loc 1 166 25
+ 732 0158 1B4B     		ldr	r3, .L38+8
+ 733 015a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 734 015c 1D4A     		ldr	r2, .L38+20
+ 735 015e 0521     		movs	r1, #5
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s 			page 17
+
+
+ 736 0160 1846     		mov	r0, r3
+ 737 0162 FFF7FEFF 		bl	BL_Send
+ 738 0166 27E0     		b	.L29
+ 739              	.L34:
+ 167:Src/main.c    **** 
+ 168:Src/main.c    ****             else
+ 169:Src/main.c    ****             {
+ 170:Src/main.c    ****                 for(i=0;i<size_b;i++)
+ 740              		.loc 1 170 22
+ 741 0168 0023     		movs	r3, #0
+ 742 016a 7B66     		str	r3, [r7, #100]
+ 743              		.loc 1 170 17
+ 744 016c 13E0     		b	.L35
+ 745              	.L36:
+ 171:Src/main.c    ****                 k_cmd4[i]=hexStringToBytes(&buffer_r[3*i]);
+ 746              		.loc 1 171 55 discriminator 3
+ 747 016e 7A6E     		ldr	r2, [r7, #100]
+ 748 0170 1346     		mov	r3, r2
+ 749 0172 5B00     		lsls	r3, r3, #1
+ 750 0174 1344     		add	r3, r3, r2
+ 751              		.loc 1 171 27 discriminator 3
+ 752 0176 07F13002 		add	r2, r7, #48
+ 753 017a 1344     		add	r3, r3, r2
+ 754 017c 1846     		mov	r0, r3
+ 755 017e FFF7FEFF 		bl	hexStringToBytes
+ 756 0182 0346     		mov	r3, r0
+ 757 0184 1946     		mov	r1, r3
+ 758              		.loc 1 171 26 discriminator 3
+ 759 0186 144A     		ldr	r2, .L38+24
+ 760 0188 7B6E     		ldr	r3, [r7, #100]
+ 761 018a 1344     		add	r3, r3, r2
+ 762 018c 0A46     		mov	r2, r1
+ 763 018e 1A70     		strb	r2, [r3]
+ 170:Src/main.c    ****                 k_cmd4[i]=hexStringToBytes(&buffer_r[3*i]);
+ 764              		.loc 1 170 35 discriminator 3
+ 765 0190 7B6E     		ldr	r3, [r7, #100]
+ 766 0192 0133     		adds	r3, r3, #1
+ 767 0194 7B66     		str	r3, [r7, #100]
+ 768              	.L35:
+ 170:Src/main.c    ****                 k_cmd4[i]=hexStringToBytes(&buffer_r[3*i]);
+ 769              		.loc 1 170 26 discriminator 1
+ 770 0196 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 771 0198 1A46     		mov	r2, r3
+ 170:Src/main.c    ****                 k_cmd4[i]=hexStringToBytes(&buffer_r[3*i]);
+ 772              		.loc 1 170 17 discriminator 1
+ 773 019a 7B6E     		ldr	r3, [r7, #100]
+ 774 019c 9342     		cmp	r3, r2
+ 775 019e E6DB     		blt	.L36
+ 172:Src/main.c    ****                 obd_send_flag=1;
+ 776              		.loc 1 172 30
+ 777 01a0 0E4B     		ldr	r3, .L38+28
+ 778 01a2 0122     		movs	r2, #1
+ 779 01a4 1A70     		strb	r2, [r3]
+ 173:Src/main.c    ****                 size_obd=size_b;
+ 780              		.loc 1 173 25
+ 781 01a6 FA7B     		ldrb	r2, [r7, #15]	@ zero_extendqisi2
+ 782 01a8 0D4B     		ldr	r3, .L38+32
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s 			page 18
+
+
+ 783 01aa 1A70     		strb	r2, [r3]
+ 174:Src/main.c    ****                 obd_count=0;
+ 784              		.loc 1 174 26
+ 785 01ac 0D4B     		ldr	r3, .L38+36
+ 786 01ae 0022     		movs	r2, #0
+ 787 01b0 1A70     		strb	r2, [r3]
+ 175:Src/main.c    ****                 send_cmd_obd=1;
+ 788              		.loc 1 175 29
+ 789 01b2 0D4B     		ldr	r3, .L38+40
+ 790 01b4 0122     		movs	r2, #1
+ 791 01b6 1A70     		strb	r2, [r3]
+ 792              	.L29:
+ 176:Src/main.c    ****             
+ 177:Src/main.c    ****             }
+ 178:Src/main.c    ****             size_b=0;
+ 793              		.loc 1 178 19
+ 794 01b8 0023     		movs	r3, #0
+ 795 01ba FB73     		strb	r3, [r7, #15]
+ 145:Src/main.c    ****         size_b=0;
+ 796              		.loc 1 145 9
+ 797 01bc 40E7     		b	.L37
+ 798              	.L39:
+ 799 01be 00BF     		.align	2
+ 800              	.L38:
+ 801 01c0 00000000 		.word	init_obd_port
+ 802 01c4 00000000 		.word	msg_size
+ 803 01c8 00000000 		.word	deviceId
+ 804 01cc 00000000 		.word	msg_log
+ 805 01d0 20000000 		.word	.LC2
+ 806 01d4 28000000 		.word	.LC3
+ 807 01d8 00000000 		.word	k_cmd4
+ 808 01dc 00000000 		.word	obd_send_flag
+ 809 01e0 00000000 		.word	size_obd
+ 810 01e4 00000000 		.word	obd_count
+ 811 01e8 00000000 		.word	send_cmd_obd
+ 812              		.cfi_endproc
+ 813              	.LFE140:
+ 815              		.section	.text.main,"ax",%progbits
+ 816              		.align	1
+ 817              		.global	main
+ 818              		.syntax unified
+ 819              		.thumb
+ 820              		.thumb_func
+ 822              	main:
+ 823              	.LFB141:
+ 179:Src/main.c    ****         }
+ 180:Src/main.c    ****     }
+ 181:Src/main.c    **** }
+ 182:Src/main.c    **** 
+ 183:Src/main.c    **** 
+ 184:Src/main.c    **** /*******************************************************************************
+ 185:Src/main.c    **** * Function Name  : main
+ 186:Src/main.c    **** * Description    : Main program
+ 187:Src/main.c    **** * Input          : None
+ 188:Src/main.c    **** * Output         : None
+ 189:Src/main.c    **** * Return         : None
+ 190:Src/main.c    **** *******************************************************************************/
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s 			page 19
+
+
+ 191:Src/main.c    **** int main(void)
+ 192:Src/main.c    **** {
+ 824              		.loc 1 192 1
+ 825              		.cfi_startproc
+ 826              		@ args = 0, pretend = 0, frame = 0
+ 827              		@ frame_needed = 1, uses_anonymous_args = 0
+ 828 0000 80B5     		push	{r7, lr}
+ 829              	.LCFI12:
+ 830              		.cfi_def_cfa_offset 8
+ 831              		.cfi_offset 7, -8
+ 832              		.cfi_offset 14, -4
+ 833 0002 82B0     		sub	sp, sp, #8
+ 834              	.LCFI13:
+ 835              		.cfi_def_cfa_offset 16
+ 836 0004 02AF     		add	r7, sp, #8
+ 837              	.LCFI14:
+ 838              		.cfi_def_cfa 7, 8
+ 193:Src/main.c    ****     // enable whatch dog
+ 194:Src/main.c    ****     IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable);
+ 839              		.loc 1 194 5
+ 840 0006 45F25550 		movw	r0, #21845
+ 841 000a FFF7FEFF 		bl	IWDG_WriteAccessCmd
+ 195:Src/main.c    ****     IWDG_SetPrescaler(IWDG_Prescaler_32);
+ 842              		.loc 1 195 5
+ 843 000e 0320     		movs	r0, #3
+ 844 0010 FFF7FEFF 		bl	IWDG_SetPrescaler
+ 196:Src/main.c    ****     IWDG_SetReload(4000);
+ 845              		.loc 1 196 5
+ 846 0014 4FF47A60 		mov	r0, #4000
+ 847 0018 FFF7FEFF 		bl	IWDG_SetReload
+ 197:Src/main.c    ****     IWDG_ReloadCounter();
+ 848              		.loc 1 197 5
+ 849 001c FFF7FEFF 		bl	IWDG_ReloadCounter
+ 198:Src/main.c    ****     IWDG_Enable();
+ 850              		.loc 1 198 5
+ 851 0020 FFF7FEFF 		bl	IWDG_Enable
+ 199:Src/main.c    **** 
+ 200:Src/main.c    ****     xTaskCreate(OBD_Task , ( signed char * ) NULL , 3000 , NULL , 3 , NULL );
+ 852              		.loc 1 200 5
+ 853 0024 0023     		movs	r3, #0
+ 854 0026 0193     		str	r3, [sp, #4]
+ 855 0028 0323     		movs	r3, #3
+ 856 002a 0093     		str	r3, [sp]
+ 857 002c 0023     		movs	r3, #0
+ 858 002e 40F6B832 		movw	r2, #3000
+ 859 0032 0021     		movs	r1, #0
+ 860 0034 0848     		ldr	r0, .L42
+ 861 0036 FFF7FEFF 		bl	xTaskCreate
+ 201:Src/main.c    ****     xTaskCreate(BL_Task , ( signed char * ) NULL , 3000 , NULL , 2 , NULL );	
+ 862              		.loc 1 201 5
+ 863 003a 0023     		movs	r3, #0
+ 864 003c 0193     		str	r3, [sp, #4]
+ 865 003e 0223     		movs	r3, #2
+ 866 0040 0093     		str	r3, [sp]
+ 867 0042 0023     		movs	r3, #0
+ 868 0044 40F6B832 		movw	r2, #3000
+ 869 0048 0021     		movs	r1, #0
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s 			page 20
+
+
+ 870 004a 0448     		ldr	r0, .L42+4
+ 871 004c FFF7FEFF 		bl	xTaskCreate
+ 202:Src/main.c    ****     vTaskStartScheduler();
+ 872              		.loc 1 202 5
+ 873 0050 FFF7FEFF 		bl	vTaskStartScheduler
+ 874              	.L41:
+ 203:Src/main.c    ****     while(1);
+ 875              		.loc 1 203 10 discriminator 1
+ 876 0054 FEE7     		b	.L41
+ 877              	.L43:
+ 878 0056 00BF     		.align	2
+ 879              	.L42:
+ 880 0058 00000000 		.word	OBD_Task
+ 881 005c 00000000 		.word	BL_Task
+ 882              		.cfi_endproc
+ 883              	.LFE141:
+ 885              		.text
+ 886              	.Letext0:
+ 887              		.file 2 "c:\\program files (x86)\\gnu arm embedded toolchain\\10 2021.10\\arm-none-eabi\\include\\
+ 888              		.file 3 "c:\\program files (x86)\\gnu arm embedded toolchain\\10 2021.10\\arm-none-eabi\\include\\
+ 889              		.file 4 "User/Inc/OBDII.h"
+ 890              		.file 5 "User/Inc/Blu.h"
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s 			page 21
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s:23     .bss.send_cmd_obd:00000000 send_cmd_obd
+C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s:24     .bss.send_cmd_obd:00000000 $d
+C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s:29     .bss.init_obd_port:00000000 init_obd_port
+C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s:30     .bss.init_obd_port:00000000 $d
+C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s:36     .bss.k_cmd4:00000000 k_cmd4
+C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s:33     .bss.k_cmd4:00000000 $d
+C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s:43     .bss.msg_log:00000000 msg_log
+C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s:40     .bss.msg_log:00000000 $d
+C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s:50     .bss.msg_size:00000000 msg_size
+C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s:47     .bss.msg_size:00000000 $d
+C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s:56     .bss.size_obd:00000000 size_obd
+C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s:57     .bss.size_obd:00000000 $d
+C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s:62     .bss.obd_send_flag:00000000 obd_send_flag
+C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s:63     .bss.obd_send_flag:00000000 $d
+C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s:65     .text.delay:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s:71     .text.delay:00000000 delay
+C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s:123    .text.delay:00000028 $d
+C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s:128    .rodata:00000000 $d
+C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s:135    .text.OBD_Task:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s:141    .text.OBD_Task:00000000 OBD_Task
+C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s:488    .text.OBD_Task:00000220 $d
+C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s:508    .text.BL_Task:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s:514    .text.BL_Task:00000000 BL_Task
+C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s:801    .text.BL_Task:000001c0 $d
+C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s:816    .text.main:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s:822    .text.main:00000000 main
+C:\Users\Admin\AppData\Local\Temp\ccGs8qHg.s:880    .text.main:00000058 $d
+
+UNDEFINED SYMBOLS
+OBD_Serial_Init
+vTaskDelay
+OBD_Send_Recive
+OBD_ecu_Init
+BL_Send
+bytesToHexString
+dif_count_obd2
+deviceId
+BL_init
+setms_timecount_HTGP
+IWDG_ReloadCounter
+BL_Recive
+hexStringToBytes
+obd_count
+IWDG_WriteAccessCmd
+IWDG_SetPrescaler
+IWDG_SetReload
+IWDG_Enable
+xTaskCreate
+vTaskStartScheduler

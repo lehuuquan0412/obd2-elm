@@ -1,0 +1,300 @@
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cc36cbsb.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 6
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"hexString.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.hexStringToBytes,"ax",%progbits
+  20              		.align	1
+  21              		.global	hexStringToBytes
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	hexStringToBytes:
+  27              	.LFB0:
+  28              		.file 1 "User/Src/hexString.c"
+   1:User/Src/hexString.c **** #include "hexString.h"
+   2:User/Src/hexString.c **** #include "stdint.h"
+   3:User/Src/hexString.c **** 
+   4:User/Src/hexString.c **** /*******************************************************************************
+   5:User/Src/hexString.c **** * Function Name  : hexStringToBytes
+   6:User/Src/hexString.c **** * Description    : convert string to value
+   7:User/Src/hexString.c **** * Input          : inhex 
+   8:User/Src/hexString.c **** * Output         : None
+   9:User/Src/hexString.c **** * Return         : value1 
+  10:User/Src/hexString.c **** *******************************************************************************/			
+  11:User/Src/hexString.c **** uint8_t hexStringToBytes(char *inhex)
+  12:User/Src/hexString.c **** {
+  29              		.loc 1 12 1
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 16
+  32              		@ frame_needed = 1, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  34 0000 80B4     		push	{r7}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 4
+  37              		.cfi_offset 7, -4
+  38 0002 85B0     		sub	sp, sp, #20
+  39              	.LCFI1:
+  40              		.cfi_def_cfa_offset 24
+  41 0004 00AF     		add	r7, sp, #0
+  42              	.LCFI2:
+  43              		.cfi_def_cfa_register 7
+  44 0006 7860     		str	r0, [r7, #4]
+  13:User/Src/hexString.c **** 	uint8_t value1=0,value2=0;
+  45              		.loc 1 13 10
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cc36cbsb.s 			page 2
+
+
+  46 0008 0023     		movs	r3, #0
+  47 000a FB73     		strb	r3, [r7, #15]
+  48              		.loc 1 13 19
+  49 000c 0023     		movs	r3, #0
+  50 000e BB73     		strb	r3, [r7, #14]
+  14:User/Src/hexString.c **** 
+  15:User/Src/hexString.c **** 	value1=inhex[0]-48;
+  51              		.loc 1 15 14
+  52 0010 7B68     		ldr	r3, [r7, #4]
+  53 0012 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  54              		.loc 1 15 8
+  55 0014 303B     		subs	r3, r3, #48
+  56 0016 FB73     		strb	r3, [r7, #15]
+  16:User/Src/hexString.c **** 	if (value1>10)
+  57              		.loc 1 16 5
+  58 0018 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+  59 001a 0A2B     		cmp	r3, #10
+  60 001c 02D9     		bls	.L2
+  17:User/Src/hexString.c **** 		value1=value1-7;
+  61              		.loc 1 17 9
+  62 001e FB7B     		ldrb	r3, [r7, #15]
+  63 0020 073B     		subs	r3, r3, #7
+  64 0022 FB73     		strb	r3, [r7, #15]
+  65              	.L2:
+  18:User/Src/hexString.c **** 	
+  19:User/Src/hexString.c **** 	value2=inhex[1]-48;
+  66              		.loc 1 19 14
+  67 0024 7B68     		ldr	r3, [r7, #4]
+  68 0026 0133     		adds	r3, r3, #1
+  69 0028 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  70              		.loc 1 19 8
+  71 002a 303B     		subs	r3, r3, #48
+  72 002c BB73     		strb	r3, [r7, #14]
+  20:User/Src/hexString.c **** 	if (value2>10)
+  73              		.loc 1 20 5
+  74 002e BB7B     		ldrb	r3, [r7, #14]	@ zero_extendqisi2
+  75 0030 0A2B     		cmp	r3, #10
+  76 0032 02D9     		bls	.L3
+  21:User/Src/hexString.c **** 			value2=value2-7;	
+  77              		.loc 1 21 10
+  78 0034 BB7B     		ldrb	r3, [r7, #14]
+  79 0036 073B     		subs	r3, r3, #7
+  80 0038 BB73     		strb	r3, [r7, #14]
+  81              	.L3:
+  22:User/Src/hexString.c **** 	
+  23:User/Src/hexString.c **** 	
+  24:User/Src/hexString.c **** 	value1=(value1<<4)|value2;
+  82              		.loc 1 24 16
+  83 003a FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+  84 003c 1B01     		lsls	r3, r3, #4
+  85              		.loc 1 24 20
+  86 003e 5AB2     		sxtb	r2, r3
+  87 0040 97F90E30 		ldrsb	r3, [r7, #14]
+  88 0044 1343     		orrs	r3, r3, r2
+  89 0046 5BB2     		sxtb	r3, r3
+  90              		.loc 1 24 8
+  91 0048 FB73     		strb	r3, [r7, #15]
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cc36cbsb.s 			page 3
+
+
+  25:User/Src/hexString.c **** 	return value1;
+  92              		.loc 1 25 9
+  93 004a FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+  26:User/Src/hexString.c **** }
+  94              		.loc 1 26 1
+  95 004c 1846     		mov	r0, r3
+  96 004e 1437     		adds	r7, r7, #20
+  97              	.LCFI3:
+  98              		.cfi_def_cfa_offset 4
+  99 0050 BD46     		mov	sp, r7
+ 100              	.LCFI4:
+ 101              		.cfi_def_cfa_register 13
+ 102              		@ sp needed
+ 103 0052 5DF8047B 		ldr	r7, [sp], #4
+ 104              	.LCFI5:
+ 105              		.cfi_restore 7
+ 106              		.cfi_def_cfa_offset 0
+ 107 0056 7047     		bx	lr
+ 108              		.cfi_endproc
+ 109              	.LFE0:
+ 111              		.section	.text.bytesToHexString,"ax",%progbits
+ 112              		.align	1
+ 113              		.global	bytesToHexString
+ 114              		.syntax unified
+ 115              		.thumb
+ 116              		.thumb_func
+ 118              	bytesToHexString:
+ 119              	.LFB1:
+  27:User/Src/hexString.c **** 
+  28:User/Src/hexString.c **** 
+  29:User/Src/hexString.c **** /*******************************************************************************
+  30:User/Src/hexString.c **** * Function Name  : bytesToHexString
+  31:User/Src/hexString.c **** * Description    : convert value to string
+  32:User/Src/hexString.c **** * Input          : hex,bytesin
+  33:User/Src/hexString.c **** * Output         : None
+  34:User/Src/hexString.c **** * Return         : None 
+  35:User/Src/hexString.c **** *******************************************************************************/	
+  36:User/Src/hexString.c **** void bytesToHexString(char *bytesin,uint8_t hex)
+  37:User/Src/hexString.c **** {
+ 120              		.loc 1 37 1
+ 121              		.cfi_startproc
+ 122              		@ args = 0, pretend = 0, frame = 16
+ 123              		@ frame_needed = 1, uses_anonymous_args = 0
+ 124              		@ link register save eliminated.
+ 125 0000 80B4     		push	{r7}
+ 126              	.LCFI6:
+ 127              		.cfi_def_cfa_offset 4
+ 128              		.cfi_offset 7, -4
+ 129 0002 85B0     		sub	sp, sp, #20
+ 130              	.LCFI7:
+ 131              		.cfi_def_cfa_offset 24
+ 132 0004 00AF     		add	r7, sp, #0
+ 133              	.LCFI8:
+ 134              		.cfi_def_cfa_register 7
+ 135 0006 7860     		str	r0, [r7, #4]
+ 136 0008 0B46     		mov	r3, r1
+ 137 000a FB70     		strb	r3, [r7, #3]
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cc36cbsb.s 			page 4
+
+
+  38:User/Src/hexString.c **** 	uint8_t value1=0,value2=0;
+ 138              		.loc 1 38 10
+ 139 000c 0023     		movs	r3, #0
+ 140 000e FB73     		strb	r3, [r7, #15]
+ 141              		.loc 1 38 19
+ 142 0010 0023     		movs	r3, #0
+ 143 0012 BB73     		strb	r3, [r7, #14]
+  39:User/Src/hexString.c **** 	
+  40:User/Src/hexString.c **** 	value1=hex>>4;
+ 144              		.loc 1 40 8
+ 145 0014 FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
+ 146 0016 1B09     		lsrs	r3, r3, #4
+ 147 0018 FB73     		strb	r3, [r7, #15]
+  41:User/Src/hexString.c **** 	value2=hex&0x0f;
+ 148              		.loc 1 41 8
+ 149 001a FB78     		ldrb	r3, [r7, #3]
+ 150 001c 03F00F03 		and	r3, r3, #15
+ 151 0020 BB73     		strb	r3, [r7, #14]
+  42:User/Src/hexString.c **** 	if(value1<10)
+ 152              		.loc 1 42 4
+ 153 0022 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 154 0024 092B     		cmp	r3, #9
+ 155 0026 05D8     		bhi	.L6
+  43:User/Src/hexString.c **** 		bytesin[0]=value1+48;
+ 156              		.loc 1 43 20
+ 157 0028 FB7B     		ldrb	r3, [r7, #15]
+ 158 002a 3033     		adds	r3, r3, #48
+ 159 002c DAB2     		uxtb	r2, r3
+ 160              		.loc 1 43 13
+ 161 002e 7B68     		ldr	r3, [r7, #4]
+ 162 0030 1A70     		strb	r2, [r3]
+ 163 0032 04E0     		b	.L7
+ 164              	.L6:
+  44:User/Src/hexString.c **** 	else
+  45:User/Src/hexString.c **** 		bytesin[0]=value1+55;
+ 165              		.loc 1 45 20
+ 166 0034 FB7B     		ldrb	r3, [r7, #15]
+ 167 0036 3733     		adds	r3, r3, #55
+ 168 0038 DAB2     		uxtb	r2, r3
+ 169              		.loc 1 45 13
+ 170 003a 7B68     		ldr	r3, [r7, #4]
+ 171 003c 1A70     		strb	r2, [r3]
+ 172              	.L7:
+  46:User/Src/hexString.c **** 	
+  47:User/Src/hexString.c **** 	
+  48:User/Src/hexString.c **** 		if(value2<10)
+ 173              		.loc 1 48 5
+ 174 003e BB7B     		ldrb	r3, [r7, #14]	@ zero_extendqisi2
+ 175 0040 092B     		cmp	r3, #9
+ 176 0042 06D8     		bhi	.L8
+  49:User/Src/hexString.c **** 		bytesin[1]=value2+48;
+ 177              		.loc 1 49 10
+ 178 0044 7B68     		ldr	r3, [r7, #4]
+ 179 0046 0133     		adds	r3, r3, #1
+ 180              		.loc 1 49 20
+ 181 0048 BA7B     		ldrb	r2, [r7, #14]
+ 182 004a 3032     		adds	r2, r2, #48
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cc36cbsb.s 			page 5
+
+
+ 183 004c D2B2     		uxtb	r2, r2
+ 184              		.loc 1 49 13
+ 185 004e 1A70     		strb	r2, [r3]
+ 186 0050 05E0     		b	.L9
+ 187              	.L8:
+  50:User/Src/hexString.c **** 		else
+  51:User/Src/hexString.c **** 		bytesin[1]=value2+55;
+ 188              		.loc 1 51 10
+ 189 0052 7B68     		ldr	r3, [r7, #4]
+ 190 0054 0133     		adds	r3, r3, #1
+ 191              		.loc 1 51 20
+ 192 0056 BA7B     		ldrb	r2, [r7, #14]
+ 193 0058 3732     		adds	r2, r2, #55
+ 194 005a D2B2     		uxtb	r2, r2
+ 195              		.loc 1 51 13
+ 196 005c 1A70     		strb	r2, [r3]
+ 197              	.L9:
+  52:User/Src/hexString.c **** 		
+  53:User/Src/hexString.c **** 	bytesin[2]=0x20;
+ 198              		.loc 1 53 9
+ 199 005e 7B68     		ldr	r3, [r7, #4]
+ 200 0060 0233     		adds	r3, r3, #2
+ 201              		.loc 1 53 12
+ 202 0062 2022     		movs	r2, #32
+ 203 0064 1A70     		strb	r2, [r3]
+  54:User/Src/hexString.c **** }...
+ 204              		.loc 1 54 1
+ 205 0066 00BF     		nop
+ 206 0068 1437     		adds	r7, r7, #20
+ 207              	.LCFI9:
+ 208              		.cfi_def_cfa_offset 4
+ 209 006a BD46     		mov	sp, r7
+ 210              	.LCFI10:
+ 211              		.cfi_def_cfa_register 13
+ 212              		@ sp needed
+ 213 006c 5DF8047B 		ldr	r7, [sp], #4
+ 214              	.LCFI11:
+ 215              		.cfi_restore 7
+ 216              		.cfi_def_cfa_offset 0
+ 217 0070 7047     		bx	lr
+ 218              		.cfi_endproc
+ 219              	.LFE1:
+ 221              		.text
+ 222              	.Letext0:
+ 223              		.file 2 "c:\\program files (x86)\\gnu arm embedded toolchain\\10 2021.10\\arm-none-eabi\\include\\
+ 224              		.file 3 "c:\\program files (x86)\\gnu arm embedded toolchain\\10 2021.10\\arm-none-eabi\\include\\
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cc36cbsb.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 hexString.c
+C:\Users\Admin\AppData\Local\Temp\cc36cbsb.s:20     .text.hexStringToBytes:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\cc36cbsb.s:26     .text.hexStringToBytes:00000000 hexStringToBytes
+C:\Users\Admin\AppData\Local\Temp\cc36cbsb.s:112    .text.bytesToHexString:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\cc36cbsb.s:118    .text.bytesToHexString:00000000 bytesToHexString
+
+NO UNDEFINED SYMBOLS

@@ -1,0 +1,622 @@
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cclmwzE2.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 6
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"Blu.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.global	deviceId
+  20              		.section	.data.deviceId,"aw"
+  23              	deviceId:
+  24 0000 01       		.byte	1
+  25              		.global	AT_count
+  26              		.section	.bss.AT_count,"aw",%nobits
+  27              		.align	1
+  30              	AT_count:
+  31 0000 0000     		.space	2
+  32              		.global	AT_buf
+  33              		.section	.bss.AT_buf,"aw",%nobits
+  34              		.align	2
+  37              	AT_buf:
+  38 0000 00000000 		.space	200
+  38      00000000 
+  38      00000000 
+  38      00000000 
+  38      00000000 
+  39              		.section	.text.BL_init,"ax",%progbits
+  40              		.align	1
+  41              		.global	BL_init
+  42              		.syntax unified
+  43              		.thumb
+  44              		.thumb_func
+  46              	BL_init:
+  47              	.LFB133:
+  48              		.file 1 "User/Src/Blu.c"
+   1:User/Src/Blu.c **** 
+   2:User/Src/Blu.c **** 
+   3:User/Src/Blu.c **** #include "stm32f4xx_it.h"
+   4:User/Src/Blu.c **** #include "stm32f4xx.h"
+   5:User/Src/Blu.c **** #include "stm32f4xx_usart.h"
+   6:User/Src/Blu.c **** #include "stm32f4xx_gpio.h"
+   7:User/Src/Blu.c **** #include "stm32f4xx_rcc.h"
+   8:User/Src/Blu.c **** 
+   9:User/Src/Blu.c **** #include "config.h"
+  10:User/Src/Blu.c **** #include "Blu.h"
+  11:User/Src/Blu.c **** 
+  12:User/Src/Blu.c **** #include <stdlib.h>
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cclmwzE2.s 			page 2
+
+
+  13:User/Src/Blu.c **** #include <stdint.h>
+  14:User/Src/Blu.c **** #include <string.h>
+  15:User/Src/Blu.c **** 
+  16:User/Src/Blu.c **** 
+  17:User/Src/Blu.c **** uint8_t deviceId=1;
+  18:User/Src/Blu.c **** uint16_t AT_count=0;
+  19:User/Src/Blu.c **** char AT_buf[buf_Size];
+  20:User/Src/Blu.c **** 
+  21:User/Src/Blu.c **** /*******************************************************************************
+  22:User/Src/Blu.c **** * Function Name  : BL_init
+  23:User/Src/Blu.c **** * Description    : init serial port for bluetooth
+  24:User/Src/Blu.c **** * Input          : None
+  25:User/Src/Blu.c **** * Output         : None
+  26:User/Src/Blu.c **** * Return         : None
+  27:User/Src/Blu.c **** *******************************************************************************/	
+  28:User/Src/Blu.c **** 
+  29:User/Src/Blu.c **** 
+  30:User/Src/Blu.c **** void BL_init(){
+  49              		.loc 1 30 15
+  50              		.cfi_startproc
+  51              		@ args = 0, pretend = 0, frame = 40
+  52              		@ frame_needed = 1, uses_anonymous_args = 0
+  53 0000 80B5     		push	{r7, lr}
+  54              	.LCFI0:
+  55              		.cfi_def_cfa_offset 8
+  56              		.cfi_offset 7, -8
+  57              		.cfi_offset 14, -4
+  58 0002 8AB0     		sub	sp, sp, #40
+  59              	.LCFI1:
+  60              		.cfi_def_cfa_offset 48
+  61 0004 00AF     		add	r7, sp, #0
+  62              	.LCFI2:
+  63              		.cfi_def_cfa_register 7
+  31:User/Src/Blu.c ****     int i=0;
+  64              		.loc 1 31 9
+  65 0006 0023     		movs	r3, #0
+  66 0008 7B62     		str	r3, [r7, #36]
+  32:User/Src/Blu.c ****     uint8_t rsp_flag=0;
+  67              		.loc 1 32 13
+  68 000a 0023     		movs	r3, #0
+  69 000c 87F82330 		strb	r3, [r7, #35]
+  33:User/Src/Blu.c ****     uint16_t add_write=0;
+  70              		.loc 1 33 14
+  71 0010 0023     		movs	r3, #0
+  72 0012 3B84     		strh	r3, [r7, #32]	@ movhi
+  34:User/Src/Blu.c ****     uint16_t temp = 0;
+  73              		.loc 1 34 14
+  74 0014 0023     		movs	r3, #0
+  75 0016 FB83     		strh	r3, [r7, #30]	@ movhi
+  35:User/Src/Blu.c **** 
+  36:User/Src/Blu.c **** 
+  37:User/Src/Blu.c ****     GPIO_InitTypeDef GPIO_InitStructure;
+  38:User/Src/Blu.c ****     USART_InitTypeDef USART_InitStructure; 
+  39:User/Src/Blu.c ****     NVIC_InitTypeDef NVIC_InitStructure;
+  40:User/Src/Blu.c **** 
+  41:User/Src/Blu.c ****     RCC_APB2PeriphClockCmd(RCC_AHB1Periph_GPIOA ,ENABLE);
+  76              		.loc 1 41 5
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cclmwzE2.s 			page 3
+
+
+  77 0018 0121     		movs	r1, #1
+  78 001a 0120     		movs	r0, #1
+  79 001c FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+  42:User/Src/Blu.c ****     RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2 ,ENABLE);
+  80              		.loc 1 42 5
+  81 0020 0121     		movs	r1, #1
+  82 0022 4FF40030 		mov	r0, #131072
+  83 0026 FFF7FEFF 		bl	RCC_APB1PeriphClockCmd
+  43:User/Src/Blu.c **** 
+  44:User/Src/Blu.c ****     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
+  84              		.loc 1 44 33
+  85 002a 0423     		movs	r3, #4
+  86 002c 7B61     		str	r3, [r7, #20]
+  45:User/Src/Blu.c ****     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+  87              		.loc 1 45 34
+  88 002e 0223     		movs	r3, #2
+  89 0030 3B76     		strb	r3, [r7, #24]
+  46:User/Src/Blu.c ****     GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  90              		.loc 1 46 35
+  91 0032 0023     		movs	r3, #0
+  92 0034 BB76     		strb	r3, [r7, #26]
+  47:User/Src/Blu.c ****     GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+  93              		.loc 1 47 34
+  94 0036 0023     		movs	r3, #0
+  95 0038 FB76     		strb	r3, [r7, #27]
+  48:User/Src/Blu.c ****     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  96              		.loc 1 48 35
+  97 003a 0223     		movs	r3, #2
+  98 003c 7B76     		strb	r3, [r7, #25]
+  49:User/Src/Blu.c ****     
+  50:User/Src/Blu.c ****     GPIO_PinAFConfig(GPIOA, GPIO_PinSource2, GPIO_AF_USART2);
+  99              		.loc 1 50 5
+ 100 003e 0722     		movs	r2, #7
+ 101 0040 0221     		movs	r1, #2
+ 102 0042 2948     		ldr	r0, .L2
+ 103 0044 FFF7FEFF 		bl	GPIO_PinAFConfig
+  51:User/Src/Blu.c ****     GPIO_PinAFConfig(GPIOA, GPIO_PinSource3, GPIO_AF_USART2);
+ 104              		.loc 1 51 5
+ 105 0048 0722     		movs	r2, #7
+ 106 004a 0321     		movs	r1, #3
+ 107 004c 2648     		ldr	r0, .L2
+ 108 004e FFF7FEFF 		bl	GPIO_PinAFConfig
+  52:User/Src/Blu.c ****  
+  53:User/Src/Blu.c ****     GPIO_Init(GPIOA, &GPIO_InitStructure);		   
+ 109              		.loc 1 53 5
+ 110 0052 07F11403 		add	r3, r7, #20
+ 111 0056 1946     		mov	r1, r3
+ 112 0058 2348     		ldr	r0, .L2
+ 113 005a FFF7FEFF 		bl	GPIO_Init
+  54:User/Src/Blu.c **** 
+  55:User/Src/Blu.c ****     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;	         
+ 114              		.loc 1 55 33
+ 115 005e 0823     		movs	r3, #8
+ 116 0060 7B61     		str	r3, [r7, #20]
+  56:User/Src/Blu.c ****     GPIO_Init(GPIOA, &GPIO_InitStructure);
+ 117              		.loc 1 56 5
+ 118 0062 07F11403 		add	r3, r7, #20
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cclmwzE2.s 			page 4
+
+
+ 119 0066 1946     		mov	r1, r3
+ 120 0068 1F48     		ldr	r0, .L2
+ 121 006a FFF7FEFF 		bl	GPIO_Init
+  57:User/Src/Blu.c **** 
+  58:User/Src/Blu.c ****     USART_InitStructure.USART_BaudRate = 38400;
+ 122              		.loc 1 58 40
+ 123 006e 4FF41643 		mov	r3, #38400
+ 124 0072 7B60     		str	r3, [r7, #4]
+  59:User/Src/Blu.c ****     USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+ 125              		.loc 1 59 42
+ 126 0074 0023     		movs	r3, #0
+ 127 0076 3B81     		strh	r3, [r7, #8]	@ movhi
+  60:User/Src/Blu.c ****     USART_InitStructure.USART_StopBits = USART_StopBits_1;
+ 128              		.loc 1 60 40
+ 129 0078 0023     		movs	r3, #0
+ 130 007a 7B81     		strh	r3, [r7, #10]	@ movhi
+  61:User/Src/Blu.c ****     USART_InitStructure.USART_Parity = USART_Parity_No;
+ 131              		.loc 1 61 38
+ 132 007c 0023     		movs	r3, #0
+ 133 007e BB81     		strh	r3, [r7, #12]	@ movhi
+  62:User/Src/Blu.c ****     USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+ 134              		.loc 1 62 51
+ 135 0080 0023     		movs	r3, #0
+ 136 0082 3B82     		strh	r3, [r7, #16]	@ movhi
+  63:User/Src/Blu.c ****     USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
+ 137              		.loc 1 63 36
+ 138 0084 0C23     		movs	r3, #12
+ 139 0086 FB81     		strh	r3, [r7, #14]	@ movhi
+  64:User/Src/Blu.c **** 
+  65:User/Src/Blu.c ****     USART_Init(USART2, &USART_InitStructure); 
+ 140              		.loc 1 65 5
+ 141 0088 3B1D     		adds	r3, r7, #4
+ 142 008a 1946     		mov	r1, r3
+ 143 008c 1748     		ldr	r0, .L2+4
+ 144 008e FFF7FEFF 		bl	USART_Init
+  66:User/Src/Blu.c ****     USART_ITConfig(USART2, USART_IT_RXNE, ENABLE);
+ 145              		.loc 1 66 5
+ 146 0092 0122     		movs	r2, #1
+ 147 0094 40F22551 		movw	r1, #1317
+ 148 0098 1448     		ldr	r0, .L2+4
+ 149 009a FFF7FEFF 		bl	USART_ITConfig
+  67:User/Src/Blu.c ****     USART_ITConfig(USART2, USART_IT_TXE, DISABLE);
+ 150              		.loc 1 67 5
+ 151 009e 0022     		movs	r2, #0
+ 152 00a0 40F22771 		movw	r1, #1831
+ 153 00a4 1148     		ldr	r0, .L2+4
+ 154 00a6 FFF7FEFF 		bl	USART_ITConfig
+  68:User/Src/Blu.c ****     USART_ClearFlag(USART2,USART_FLAG_TC);
+ 155              		.loc 1 68 5
+ 156 00aa 4021     		movs	r1, #64
+ 157 00ac 0F48     		ldr	r0, .L2+4
+ 158 00ae FFF7FEFF 		bl	USART_ClearFlag
+  69:User/Src/Blu.c ****     USART_Cmd(USART2, ENABLE);
+ 159              		.loc 1 69 5
+ 160 00b2 0121     		movs	r1, #1
+ 161 00b4 0D48     		ldr	r0, .L2+4
+ 162 00b6 FFF7FEFF 		bl	USART_Cmd
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cclmwzE2.s 			page 5
+
+
+  70:User/Src/Blu.c **** 
+  71:User/Src/Blu.c ****     NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;
+ 163              		.loc 1 71 40
+ 164 00ba 2623     		movs	r3, #38
+ 165 00bc 3B70     		strb	r3, [r7]
+  72:User/Src/Blu.c ****     NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+ 166              		.loc 1 72 58
+ 167 00be 0023     		movs	r3, #0
+ 168 00c0 7B70     		strb	r3, [r7, #1]
+  73:User/Src/Blu.c ****     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+ 169              		.loc 1 73 43
+ 170 00c2 0123     		movs	r3, #1
+ 171 00c4 FB70     		strb	r3, [r7, #3]
+  74:User/Src/Blu.c ****     NVIC_Init(&NVIC_InitStructure);
+ 172              		.loc 1 74 5
+ 173 00c6 3B46     		mov	r3, r7
+ 174 00c8 1846     		mov	r0, r3
+ 175 00ca FFF7FEFF 		bl	NVIC_Init
+  75:User/Src/Blu.c ****     USART_ClearFlag(USART2,USART_FLAG_RXNE);
+ 176              		.loc 1 75 5
+ 177 00ce 2021     		movs	r1, #32
+ 178 00d0 0648     		ldr	r0, .L2+4
+ 179 00d2 FFF7FEFF 		bl	USART_ClearFlag
+  76:User/Src/Blu.c ****     USART_Cmd(USART2, ENABLE);
+ 180              		.loc 1 76 5
+ 181 00d6 0121     		movs	r1, #1
+ 182 00d8 0448     		ldr	r0, .L2+4
+ 183 00da FFF7FEFF 		bl	USART_Cmd
+  77:User/Src/Blu.c **** }
+ 184              		.loc 1 77 1
+ 185 00de 00BF     		nop
+ 186 00e0 2837     		adds	r7, r7, #40
+ 187              	.LCFI3:
+ 188              		.cfi_def_cfa_offset 8
+ 189 00e2 BD46     		mov	sp, r7
+ 190              	.LCFI4:
+ 191              		.cfi_def_cfa_register 13
+ 192              		@ sp needed
+ 193 00e4 80BD     		pop	{r7, pc}
+ 194              	.L3:
+ 195 00e6 00BF     		.align	2
+ 196              	.L2:
+ 197 00e8 00000240 		.word	1073872896
+ 198 00ec 00440040 		.word	1073759232
+ 199              		.cfi_endproc
+ 200              	.LFE133:
+ 202              		.section	.text.BL_Send,"ax",%progbits
+ 203              		.align	1
+ 204              		.global	BL_Send
+ 205              		.syntax unified
+ 206              		.thumb
+ 207              		.thumb_func
+ 209              	BL_Send:
+ 210              	.LFB134:
+  78:User/Src/Blu.c **** 
+  79:User/Src/Blu.c **** 
+  80:User/Src/Blu.c **** /*******************************************************************************
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cclmwzE2.s 			page 6
+
+
+  81:User/Src/Blu.c **** * Function Name  : BL_Send
+  82:User/Src/Blu.c **** * Description    : send serial data by bluetooth spp protocol
+  83:User/Src/Blu.c **** * Input          : None
+  84:User/Src/Blu.c **** * Output         : None
+  85:User/Src/Blu.c **** * Return         : None
+  86:User/Src/Blu.c **** *******************************************************************************/	
+  87:User/Src/Blu.c **** void BL_Send(uint8_t conId,uint8_t size, char* data)
+  88:User/Src/Blu.c **** {
+ 211              		.loc 1 88 1
+ 212              		.cfi_startproc
+ 213              		@ args = 0, pretend = 0, frame = 16
+ 214              		@ frame_needed = 1, uses_anonymous_args = 0
+ 215 0000 80B5     		push	{r7, lr}
+ 216              	.LCFI5:
+ 217              		.cfi_def_cfa_offset 8
+ 218              		.cfi_offset 7, -8
+ 219              		.cfi_offset 14, -4
+ 220 0002 84B0     		sub	sp, sp, #16
+ 221              	.LCFI6:
+ 222              		.cfi_def_cfa_offset 24
+ 223 0004 00AF     		add	r7, sp, #0
+ 224              	.LCFI7:
+ 225              		.cfi_def_cfa_register 7
+ 226 0006 0346     		mov	r3, r0
+ 227 0008 3A60     		str	r2, [r7]
+ 228 000a FB71     		strb	r3, [r7, #7]
+ 229 000c 0B46     		mov	r3, r1
+ 230 000e BB71     		strb	r3, [r7, #6]
+  89:User/Src/Blu.c ****     uint8_t i=0;
+ 231              		.loc 1 89 13
+ 232 0010 0023     		movs	r3, #0
+ 233 0012 FB73     		strb	r3, [r7, #15]
+  90:User/Src/Blu.c **** 
+  91:User/Src/Blu.c ****     for(i=0;i<size;i++)
+ 234              		.loc 1 91 10
+ 235 0014 0023     		movs	r3, #0
+ 236 0016 FB73     		strb	r3, [r7, #15]
+ 237              		.loc 1 91 5
+ 238 0018 13E0     		b	.L5
+ 239              	.L7:
+  92:User/Src/Blu.c ****     {
+  93:User/Src/Blu.c ****         while (USART_GetFlagStatus(USART2, USART_FLAG_TC) == RESET);
+ 240              		.loc 1 93 15
+ 241 001a 00BF     		nop
+ 242              	.L6:
+ 243              		.loc 1 93 16 discriminator 1
+ 244 001c 4021     		movs	r1, #64
+ 245 001e 0D48     		ldr	r0, .L8
+ 246 0020 FFF7FEFF 		bl	USART_GetFlagStatus
+ 247 0024 0346     		mov	r3, r0
+ 248              		.loc 1 93 15 discriminator 1
+ 249 0026 002B     		cmp	r3, #0
+ 250 0028 F8D0     		beq	.L6
+  94:User/Src/Blu.c ****         USART_SendData(USART2, (uint8_t) data[i]);
+ 251              		.loc 1 94 46 discriminator 2
+ 252 002a FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 253 002c 3A68     		ldr	r2, [r7]
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cclmwzE2.s 			page 7
+
+
+ 254 002e 1344     		add	r3, r3, r2
+ 255 0030 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 256              		.loc 1 94 9 discriminator 2
+ 257 0032 9BB2     		uxth	r3, r3
+ 258 0034 1946     		mov	r1, r3
+ 259 0036 0748     		ldr	r0, .L8
+ 260 0038 FFF7FEFF 		bl	USART_SendData
+  91:User/Src/Blu.c ****     {
+ 261              		.loc 1 91 21 discriminator 2
+ 262 003c FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 263 003e 0133     		adds	r3, r3, #1
+ 264 0040 FB73     		strb	r3, [r7, #15]
+ 265              	.L5:
+  91:User/Src/Blu.c ****     {
+ 266              		.loc 1 91 5 discriminator 1
+ 267 0042 FA7B     		ldrb	r2, [r7, #15]	@ zero_extendqisi2
+ 268 0044 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 269 0046 9A42     		cmp	r2, r3
+ 270 0048 E7D3     		bcc	.L7
+  95:User/Src/Blu.c ****     }
+  96:User/Src/Blu.c **** }
+ 271              		.loc 1 96 1
+ 272 004a 00BF     		nop
+ 273 004c 00BF     		nop
+ 274 004e 1037     		adds	r7, r7, #16
+ 275              	.LCFI8:
+ 276              		.cfi_def_cfa_offset 8
+ 277 0050 BD46     		mov	sp, r7
+ 278              	.LCFI9:
+ 279              		.cfi_def_cfa_register 13
+ 280              		@ sp needed
+ 281 0052 80BD     		pop	{r7, pc}
+ 282              	.L9:
+ 283              		.align	2
+ 284              	.L8:
+ 285 0054 00440040 		.word	1073759232
+ 286              		.cfi_endproc
+ 287              	.LFE134:
+ 289              		.section	.text.BL_Recive,"ax",%progbits
+ 290              		.align	1
+ 291              		.global	BL_Recive
+ 292              		.syntax unified
+ 293              		.thumb
+ 294              		.thumb_func
+ 296              	BL_Recive:
+ 297              	.LFB135:
+  97:User/Src/Blu.c **** 
+  98:User/Src/Blu.c **** 
+  99:User/Src/Blu.c **** 
+ 100:User/Src/Blu.c **** /*******************************************************************************
+ 101:User/Src/Blu.c **** * Function Name  : BL_Recive
+ 102:User/Src/Blu.c **** * Description    : receive serial data by bluetooth spp protocol
+ 103:User/Src/Blu.c **** * Input          : buffer,size
+ 104:User/Src/Blu.c **** * Output         : None
+ 105:User/Src/Blu.c **** * Return         : None
+ 106:User/Src/Blu.c **** *******************************************************************************/	
+ 107:User/Src/Blu.c **** void BL_Recive(char* buffer,char* size)
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cclmwzE2.s 			page 8
+
+
+ 108:User/Src/Blu.c **** {
+ 298              		.loc 1 108 1
+ 299              		.cfi_startproc
+ 300              		@ args = 0, pretend = 0, frame = 16
+ 301              		@ frame_needed = 1, uses_anonymous_args = 0
+ 302 0000 80B5     		push	{r7, lr}
+ 303              	.LCFI10:
+ 304              		.cfi_def_cfa_offset 8
+ 305              		.cfi_offset 7, -8
+ 306              		.cfi_offset 14, -4
+ 307 0002 84B0     		sub	sp, sp, #16
+ 308              	.LCFI11:
+ 309              		.cfi_def_cfa_offset 24
+ 310 0004 00AF     		add	r7, sp, #0
+ 311              	.LCFI12:
+ 312              		.cfi_def_cfa_register 7
+ 313 0006 7860     		str	r0, [r7, #4]
+ 314 0008 3960     		str	r1, [r7]
+ 109:User/Src/Blu.c **** 	uint8_t i;
+ 110:User/Src/Blu.c **** 	uint8_t rc_glag=0;
+ 315              		.loc 1 110 10
+ 316 000a 0023     		movs	r3, #0
+ 317 000c BB73     		strb	r3, [r7, #14]
+ 111:User/Src/Blu.c **** 	
+ 112:User/Src/Blu.c **** 	// if somthing recived
+ 113:User/Src/Blu.c **** 	if(AT_count>0)
+ 318              		.loc 1 113 13
+ 319 000e 1C4B     		ldr	r3, .L19
+ 320 0010 1B88     		ldrh	r3, [r3]
+ 321              		.loc 1 113 4
+ 322 0012 002B     		cmp	r3, #0
+ 323 0014 30D0     		beq	.L18
+ 114:User/Src/Blu.c **** 	{
+ 115:User/Src/Blu.c **** 		for(i=0;i<=AT_count;i++)
+ 324              		.loc 1 115 8
+ 325 0016 0023     		movs	r3, #0
+ 326 0018 FB73     		strb	r3, [r7, #15]
+ 327              		.loc 1 115 3
+ 328 001a 0AE0     		b	.L12
+ 329              	.L15:
+ 116:User/Src/Blu.c **** 		{
+ 117:User/Src/Blu.c **** 			if(AT_buf[i]==0x0d)
+ 330              		.loc 1 117 13
+ 331 001c FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 332 001e 194A     		ldr	r2, .L19+4
+ 333 0020 D35C     		ldrb	r3, [r2, r3]	@ zero_extendqisi2
+ 334              		.loc 1 117 6
+ 335 0022 0D2B     		cmp	r3, #13
+ 336 0024 02D1     		bne	.L13
+ 118:User/Src/Blu.c **** 			{
+ 119:User/Src/Blu.c **** 				rc_glag=1;
+ 337              		.loc 1 119 12
+ 338 0026 0123     		movs	r3, #1
+ 339 0028 BB73     		strb	r3, [r7, #14]
+ 120:User/Src/Blu.c **** 				break;
+ 340              		.loc 1 120 5
+ 341 002a 08E0     		b	.L14
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cclmwzE2.s 			page 9
+
+
+ 342              	.L13:
+ 115:User/Src/Blu.c **** 		{
+ 343              		.loc 1 115 24 discriminator 2
+ 344 002c FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 345 002e 0133     		adds	r3, r3, #1
+ 346 0030 FB73     		strb	r3, [r7, #15]
+ 347              	.L12:
+ 115:User/Src/Blu.c **** 		{
+ 348              		.loc 1 115 12 discriminator 1
+ 349 0032 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 350 0034 9AB2     		uxth	r2, r3
+ 351 0036 124B     		ldr	r3, .L19
+ 352 0038 1B88     		ldrh	r3, [r3]
+ 115:User/Src/Blu.c **** 		{
+ 353              		.loc 1 115 3 discriminator 1
+ 354 003a 9A42     		cmp	r2, r3
+ 355 003c EED9     		bls	.L15
+ 356              	.L14:
+ 121:User/Src/Blu.c **** 			}
+ 122:User/Src/Blu.c **** 		}
+ 123:User/Src/Blu.c **** 		//if true packet recived copy until 0x0d
+ 124:User/Src/Blu.c **** 		if(rc_glag==1)
+ 357              		.loc 1 124 5
+ 358 003e BB7B     		ldrb	r3, [r7, #14]	@ zero_extendqisi2
+ 359 0040 012B     		cmp	r3, #1
+ 360 0042 19D1     		bne	.L18
+ 125:User/Src/Blu.c **** 		{
+ 126:User/Src/Blu.c **** 		    size[0]=i;
+ 361              		.loc 1 126 14
+ 362 0044 3B68     		ldr	r3, [r7]
+ 363 0046 FA7B     		ldrb	r2, [r7, #15]
+ 364 0048 1A70     		strb	r2, [r3]
+ 127:User/Src/Blu.c **** 		    memcpy(buffer,AT_buf,size[0]);
+ 365              		.loc 1 127 32
+ 366 004a 3B68     		ldr	r3, [r7]
+ 367 004c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 368              		.loc 1 127 7
+ 369 004e 1A46     		mov	r2, r3
+ 370 0050 0C49     		ldr	r1, .L19+4
+ 371 0052 7868     		ldr	r0, [r7, #4]
+ 372 0054 FFF7FEFF 		bl	memcpy
+ 128:User/Src/Blu.c **** 			
+ 129:User/Src/Blu.c **** 			///clear buffer
+ 130:User/Src/Blu.c **** 			for(i=0;i<buf_Size;i++)
+ 373              		.loc 1 130 9
+ 374 0058 0023     		movs	r3, #0
+ 375 005a FB73     		strb	r3, [r7, #15]
+ 376              		.loc 1 130 4
+ 377 005c 06E0     		b	.L16
+ 378              	.L17:
+ 131:User/Src/Blu.c **** 			AT_buf[i]=0;
+ 379              		.loc 1 131 10 discriminator 3
+ 380 005e FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 381              		.loc 1 131 13 discriminator 3
+ 382 0060 084A     		ldr	r2, .L19+4
+ 383 0062 0021     		movs	r1, #0
+ 384 0064 D154     		strb	r1, [r2, r3]
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cclmwzE2.s 			page 10
+
+
+ 130:User/Src/Blu.c **** 			AT_buf[i]=0;
+ 385              		.loc 1 130 24 discriminator 3
+ 386 0066 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 387 0068 0133     		adds	r3, r3, #1
+ 388 006a FB73     		strb	r3, [r7, #15]
+ 389              	.L16:
+ 130:User/Src/Blu.c **** 			AT_buf[i]=0;
+ 390              		.loc 1 130 4 discriminator 1
+ 391 006c FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 392 006e C72B     		cmp	r3, #199
+ 393 0070 F5D9     		bls	.L17
+ 132:User/Src/Blu.c **** 			AT_count=0;
+ 394              		.loc 1 132 12
+ 395 0072 034B     		ldr	r3, .L19
+ 396 0074 0022     		movs	r2, #0
+ 397 0076 1A80     		strh	r2, [r3]	@ movhi
+ 398              	.L18:
+ 133:User/Src/Blu.c **** 		}								
+ 134:User/Src/Blu.c **** 	}						
+ 135:User/Src/Blu.c **** }
+ 399              		.loc 1 135 1
+ 400 0078 00BF     		nop
+ 401 007a 1037     		adds	r7, r7, #16
+ 402              	.LCFI13:
+ 403              		.cfi_def_cfa_offset 8
+ 404 007c BD46     		mov	sp, r7
+ 405              	.LCFI14:
+ 406              		.cfi_def_cfa_register 13
+ 407              		@ sp needed
+ 408 007e 80BD     		pop	{r7, pc}
+ 409              	.L20:
+ 410              		.align	2
+ 411              	.L19:
+ 412 0080 00000000 		.word	AT_count
+ 413 0084 00000000 		.word	AT_buf
+ 414              		.cfi_endproc
+ 415              	.LFE135:
+ 417              		.text
+ 418              	.Letext0:
+ 419              		.file 2 "c:\\program files (x86)\\gnu arm embedded toolchain\\10 2021.10\\arm-none-eabi\\include\\
+ 420              		.file 3 "c:\\program files (x86)\\gnu arm embedded toolchain\\10 2021.10\\arm-none-eabi\\include\\
+ 421              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
+ 422              		.file 5 "Drivers/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_gpio.h"
+ 423              		.file 6 "Drivers/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_usart.h"
+ 424              		.file 7 "Drivers/STM32F4xx_StdPeriph_Driver/inc/misc.h"
+ 425              		.file 8 "User/Inc/Blu.h"
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cclmwzE2.s 			page 11
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 Blu.c
+C:\Users\Admin\AppData\Local\Temp\cclmwzE2.s:23     .data.deviceId:00000000 deviceId
+C:\Users\Admin\AppData\Local\Temp\cclmwzE2.s:30     .bss.AT_count:00000000 AT_count
+C:\Users\Admin\AppData\Local\Temp\cclmwzE2.s:27     .bss.AT_count:00000000 $d
+C:\Users\Admin\AppData\Local\Temp\cclmwzE2.s:37     .bss.AT_buf:00000000 AT_buf
+C:\Users\Admin\AppData\Local\Temp\cclmwzE2.s:34     .bss.AT_buf:00000000 $d
+C:\Users\Admin\AppData\Local\Temp\cclmwzE2.s:40     .text.BL_init:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\cclmwzE2.s:46     .text.BL_init:00000000 BL_init
+C:\Users\Admin\AppData\Local\Temp\cclmwzE2.s:197    .text.BL_init:000000e8 $d
+C:\Users\Admin\AppData\Local\Temp\cclmwzE2.s:203    .text.BL_Send:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\cclmwzE2.s:209    .text.BL_Send:00000000 BL_Send
+C:\Users\Admin\AppData\Local\Temp\cclmwzE2.s:285    .text.BL_Send:00000054 $d
+C:\Users\Admin\AppData\Local\Temp\cclmwzE2.s:290    .text.BL_Recive:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\cclmwzE2.s:296    .text.BL_Recive:00000000 BL_Recive
+C:\Users\Admin\AppData\Local\Temp\cclmwzE2.s:412    .text.BL_Recive:00000080 $d
+
+UNDEFINED SYMBOLS
+RCC_APB2PeriphClockCmd
+RCC_APB1PeriphClockCmd
+GPIO_PinAFConfig
+GPIO_Init
+USART_Init
+USART_ITConfig
+USART_ClearFlag
+USART_Cmd
+NVIC_Init
+USART_GetFlagStatus
+USART_SendData
+memcpy

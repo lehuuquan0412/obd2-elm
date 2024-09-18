@@ -1,0 +1,4 @@
+pack:
+  ../Geehy.APM32F4xx_DFP.1.0.4.pack
+target_override:
+  apm32f407VE
